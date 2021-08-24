@@ -1,9 +1,9 @@
 ## Title: Leonardo's Wardrobe Manager
-## Author: Leonardo1123
-## APIVersion: 100035
-## AddOnVersion: 001
-## Version: 0.0.1
-
-## Description: An add-on for managing wardrobes
+## Description: Used to manage wardrobes
+## APIVersion: 101031
+## OptionalDependsOn: LibStub
+## DependsOn: LibAddonMenu-2.0
+## SavedVariables: LeonardosWardrobeManagerVariables
 
 LeonardosWardrobeManager.lua
+LeonardosWardrobeManager.xml

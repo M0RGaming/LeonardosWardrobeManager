@@ -1,36 +1,35 @@
--- Define Table
-WardrobeManager = {}
- 
--- Save nickname
-WardrobeManager.name = "WardrobeManager"
- 
--- Init
-function WardrobeManager:Initialize()
-  self.inCombat = IsUnitInCombat("player")
-  
-    EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_COMBAT_STATE, self.OnPlayerCombatState)
+LeonardosWardrobeManager = {}
 
+-------------------------------------------------------------------------------------------------
+--  Initialize Variables --
+-------------------------------------------------------------------------------------------------
+LeonardosWardrobeManager.name = "LeonardosWardrobeManager"
+LeonardosWardrobeManager.version = 1
+
+-------------------------------------------------------------------------------------------------
+--  OnAddOnLoaded  --
+-------------------------------------------------------------------------------------------------
+function LeonardosWardrobeManager.OnAddOnLoaded(event, addonName)
+    if addonName ~= LeonardosWardrobeManager.name then return end
+
+    LeonardosWardrobeManager:Initialize()
 end
 
--- Combat State-Change Handler
-function WardrobeManager.OnPlayerCombatState(event, inCombat)
-  -- The ~= operator is "not equal to" in Lua.
-  if inCombat ~= WardrobeManager.inCombat then
-    -- The player's state has changed. Update the stored state...
-    WardrobeManager.inCombat = inCombat
- 
-    -- ...and then update the control.
-    WardrobeManagerIndicator:SetHidden(not inCombat)
-  end
+-------------------------------------------------------------------------------------------------
+--  Initialize Function --
+-------------------------------------------------------------------------------------------------
+function LeonardosWardrobeManager:Initialize()
+
+    -- Gets our characters name
+    local ourName = GetUnitName("player")
+
+    -- Sets the text for our label to ourName
+    LeonardosWardrobeManagerWindowLabel:SetText(ourName)
+
+    EVENT_MANAGER:UnregisterForEvent(LeonardosWardrobeManager.name, EVENT_ADD_ON_LOADED)
 end
- 
--- Event Handler
-function WardrobeManager.OnAddOnLoaded(event, addonName)
-  -- Only init when loading this addon
-  if addonName == WardrobeManager.name then
-    WardrobeManager:Initialize()
-  end
-end
- 
--- Register the event handler
-EVENT_MANAGER:RegisterForEvent(WardrobeManager.name, EVENT_ADD_ON_LOADED, WardrobeManager.OnAddOnLoaded)
+
+-------------------------------------------------------------------------------------------------
+--  Register Events --
+-------------------------------------------------------------------------------------------------
+EVENT_MANAGER:RegisterForEvent(LeonardosWardrobeManager.name, EVENT_ADD_ON_LOADED, LeonardosWardrobeManager.OnAddOnLoaded)
