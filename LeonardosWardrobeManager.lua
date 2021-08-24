@@ -14,8 +14,10 @@ function LeonardosWardrobeManager.OnPlayerCombatState(event, inCombat)
         -- ...and then announce the change.
         if inCombat then
             d("Entering combat.")
+            EquipOutfit(2)
         else
             d("Exiting combat.")
+            UnequipOutfit()
         end
 
     end
