@@ -1,47 +1,20 @@
 <GuiXml>
     <Controls>
-        <TopLevelControl name="LeonardosWardrobeManagerWindow"
-                         clampedToScreen="true"
-                         mouseEnabled="true"
-                         movable="true"
-                         hidden="false">
+        <TopLevelControl name="LeonardosWardrobeManager" mouseEnabled="true" movable="true" clampedToScreen="true">
+            <Dimensions x="200" y="25" />
+            <Anchor point="BOTTOM" relativeTo="GuiRoot" relativePoint="CENTER" offsetY="-20" />
+            <OnInitialized>
+                -- LUA code here. This is where you'd check to see if the control needs to be hidden or not.
+                LeonardosWardrobeManager:SetHidden(not IsUnitInCombat('player'))
+            </OnInitialized>
+            <OnMoveStop>
+                FooAddon.OnIndicatorMoveStop()
+            </OnMoveStop>
 
-            <Dimensions x="300" y="50" />
-            <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="CENTER"/>
-            <!--
-            point="TOPLEFT"         ~ This control's anchor
-            relativeTo="GuiRoot"    ~ parent anchor body
-            relativePoint="CENTER"  ~ parent anchor point
-            -->
             <Controls>
-                <Backdrop name="$(parent)Backdrop"
-                          edgeColor="000000"
-                          layer="0"
-                          level="0"
-                          centerColor="000000"
-                          alpha="0.0" >
-
-                    <!--
-                    Create a backdrop...basically a background for our control.
-                    Do note that this time in our name we used $(parent)Backdrop.
-
-                    $(parent)       ~ Name of parent body
-                    -->
-                    <Dimensions x="300" y="50" />
-                    <Anchor point="TOPLEFT"  relativeTo="$(parent)" relativePoint="TOPLEFT"/>
-                    <Edge edgeSize="6" />
-                </Backdrop>
-
-                <Label name="$(parent)Label"
-                       font="ZoFontWinH1"
-                       color="ffffff"
-                       text="Status Bar"
-                       verticalAlignment="CENTER"
-                       horizontalAlignment="LEFT"
-                       alpha="0.85">
-
-                    <Dimensions x="350" y="50" />
-                    <Anchor point="BOTTOMLEFT"  relativeTo="$(parent)StatusBar" relativePoint="TOPLEFT"/>
+                <Label name="$(parent)Label" width="200" height="25" font="ZoFontWinH1" inheritAlpha="true" color="FF0000"
+                       wrapMode="TRUNCATE" verticalAlignment="TOP" horizontalAlignment="CENTER" text="Fighting!">
+                    <Anchor point="TOP" relativeTo="$(parent)" relativePoint="TOP" />
                 </Label>
             </Controls>
         </TopLevelControl>
