@@ -1,7 +1,5 @@
 ## Title: Leonardo's Wardrobe Manager
-## APIVersion: 100009
-## SavedVariables: LeonardosWardrobeManagerSavedVariables
+## APIVersion: 101035
 ## Description: Helps manage your wardrobe
 
-LeonardosWardrobeManager.xml
 LeonardosWardrobeManager.lua
