@@ -63,26 +63,41 @@ optionsData = {
         type = "dropdown",
         name = "Default Outfit",
         tooltip = "The outfit to be worn by default",
-        choices = {},
+        choices = LeonardosWardrobeManager.allOutfits,
         getFunc = function() return LeonardosWardrobeManager.savedVariables.defaultOutfit end,
         setFunc = function(var) LeonardosWardrobeManager.SetStateOutfit("DEFAULT", var) end,
     },
     [3] = {
-        type = "dropdown",
-        name = "Combat Outfit",
-        tooltip = "The outfit to be switched to upon entering combat",
-        choices = {},
-        getFunc = function() return LeonardosWardrobeManager.savedVariables.combatOutfit end,
-        setFunc = function(var) LeonardosWardrobeManager.SetStateOutfit("COMBAT", var) end,
-    },
-    [4] = {
-        type = "dropdown",
-        name = "Stealth Outfit",
-        tooltip = "The outfit to be switched to upon entering stealth",
-        choices = {},
-        getFunc = function() return LeonardosWardrobeManager.savedVariables.stealthOutfit end,
-        setFunc = function(var) LeonardosWardrobeManager.SetStateOutfit("STEALTH", var) end,
-    },
+        type = "submenu",
+        name = "Combat",
+        tooltip = "Options related to combat and stealth", --(optional)
+        controls = {
+            [1] = {
+                type = "dropdown",
+                name = "Combat Outfit",
+                tooltip = "The outfit to be switched to upon entering combat",
+                choices = LeonardosWardrobeManager.allOutfits,
+                getFunc = function()
+                    return LeonardosWardrobeManager.savedVariables.combatOutfit
+                end,
+                setFunc = function(var)
+                    LeonardosWardrobeManager.SetStateOutfit("COMBAT", var)
+                end,
+            },
+            [2] = {
+                type = "dropdown",
+                name = "Stealth Outfit",
+                tooltip = "The outfit to be switched to upon entering stealth",
+                choices = LeonardosWardrobeManager.allOutfits,
+                getFunc = function()
+                    return LeonardosWardrobeManager.savedVariables.stealthOutfit
+                end,
+                setFunc = function(var)
+                    LeonardosWardrobeManager.SetStateOutfit("STEALTH", var)
+                end,
+            },
+        }
+    }
 }
 
 function LeonardosWardrobeManager.ChangeOutfit(index)
@@ -128,10 +143,6 @@ function LeonardosWardrobeManager:Initialize()
     for i=1,GetNumUnlockedOutfits() do
         self.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(0, i)
     end
-
-    optionsData[2].choices = self.allOutfits
-    optionsData[3].choices = self.allOutfits
-    optionsData[4].choices = self.allOutfits
 
     LAM2:RegisterAddonPanel("LeonardosWardrobeManagerOptions", panelData)
     LAM2:RegisterOptionControls("LeonardosWardrobeManagerOptions", optionsData)
