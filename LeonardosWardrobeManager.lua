@@ -66,10 +66,9 @@ end
 local optionsData = {
     [1] = {
         type = "description",
-        --title = "My Title",	--(optional)
-        title = nil,	--(optional)
+        title = nil,
         text = "Warning: If you rename an outfit, you will need to reload the UI for those changes to take effect here",
-        width = "full",	--or "half" (optional)
+        width = "full",
     },
     [2] = {
         type = "dropdown",
