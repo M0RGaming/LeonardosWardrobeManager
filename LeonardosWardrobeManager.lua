@@ -4,6 +4,9 @@ LeonardosWardrobeManager = {}
 -- This isn't strictly necessary, but we'll use this string later when registering events.
 -- Better to define it in a single place rather than retyping the same string.
 LeonardosWardrobeManager.name = "LeonardosWardrobeManager"
+LeonardosWardrobeManager.allOutfits = {"No Outfit"}
+LeonardosWardrobeManager.combatOutfit = nil
+LeonardosWardrobeManager.combatOutfitIndex = nil
 
 local panelData = {
     type = "panel",
@@ -12,19 +15,18 @@ local panelData = {
 
 local LAM2 = LibAddonMenu2
 
+local OUTFIT_OFFSET = 1
+
 local optionsData = {
     [1] = {
         type = "dropdown",
-        name = "My Dropdown",
-        tooltip = "Dropdown's tooltip text.",
-        choices = {"table", "of", "choices"},
-        getFunc = function() return "of" end,
+        name = "Combat Outfit",
+        tooltip = "The outfit to be switched to upon entering combat",
+        choices = {},
+        getFunc = function() return "No Outfit" end,
         setFunc = function(var) print(var) end,
     },
 }
-
-LAM2:RegisterAddonPanel("LeonardosWardrobeManagerOptions", panelData)
-LAM2:RegisterOptionControls("LeonardosWardrobeManagerOptions", optionsData)
 
 function LeonardosWardrobeManager.OnPlayerCombatState(event, inCombat)
     -- The ~= operator is "not equal to" in Lua.
@@ -35,7 +37,7 @@ function LeonardosWardrobeManager.OnPlayerCombatState(event, inCombat)
         -- ...and then announce the change.
         if inCombat then
             d("Entering combat.")
-            EquipOutfit(0, 2)
+            EquipOutfit(0, 1)
         else
             d("Exiting combat.")
             UnequipOutfit()
@@ -46,6 +48,15 @@ end
 
 function LeonardosWardrobeManager:Initialize()
     self.inCombat = IsUnitInCombat("player")
+
+    for i=1,GetNumUnlockedOutfits() do
+        self.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(0, i)
+    end
+
+    optionsData[1].choices = self.allOutfits
+
+    LAM2:RegisterAddonPanel("LeonardosWardrobeManagerOptions", panelData)
+    LAM2:RegisterOptionControls("LeonardosWardrobeManagerOptions", optionsData)
 
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_COMBAT_STATE, self.OnPlayerCombatState)
 end
