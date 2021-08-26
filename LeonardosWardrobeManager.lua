@@ -5,8 +5,21 @@ LeonardosWardrobeManager = {}
 -- Better to define it in a single place rather than retyping the same string.
 LeonardosWardrobeManager.name = "LeonardosWardrobeManager"
 LeonardosWardrobeManager.allOutfits = {"No Outfit"}
+
+LeonardosWardrobeManager.defaultOutfit = nil
+LeonardosWardrobeManager.defaultOutfitIndex = nil
+
 LeonardosWardrobeManager.combatOutfit = nil
 LeonardosWardrobeManager.combatOutfitIndex = nil
+
+LeonardosWardrobeManager.variableVersion = 2
+LeonardosWardrobeManager.default = {
+    defaultOutfit = "No Outfit",
+    defaultOutfitIndex = 0,
+
+    combatOutfit = "No Outfit",
+    combatOutfitIndex = 0
+}
 
 local panelData = {
     type = "panel",
@@ -17,14 +30,63 @@ local LAM2 = LibAddonMenu2
 
 local OUTFIT_OFFSET = 1
 
+function LeonardosWardrobeManager.SetDefaultOutfit(name)
+    LeonardosWardrobeManager.defaultOutfit = name
+    if LeonardosWardrobeManager.defaultOutfit == "No Outfit" then
+        LeonardosWardrobeManager.defaultOutfitIndex = 0
+    else
+        for i=1,GetNumUnlockedOutfits() do
+            if GetOutfitName(0, i) == LeonardosWardrobeManager.defaultOutfit then
+                LeonardosWardrobeManager.defaultOutfitIndex = i
+                break
+            end
+        end
+    end
+
+    if LeonardosWardrobeManager.defaultOutfitIndex == 0 and GetEquippedOutfitIndex() ~= nil then
+        UnequipOutfit()
+    else if LeonardosWardrobeManager.defaultOutfitIndex ~= GetEquippedOutfitIndex() then
+        EquipOutfit(0, LeonardosWardrobeManager.defaultOutfitIndex)
+    end
+    end
+
+    LeonardosWardrobeManager.savedVariables.defaultOutfit = LeonardosWardrobeManager.defaultOutfit
+    LeonardosWardrobeManager.savedVariables.defaultOutfitIndex = LeonardosWardrobeManager.defaultOutfitIndex
+end
+
+function LeonardosWardrobeManager.SetCombatOutfit(name)
+    LeonardosWardrobeManager.combatOutfit = name
+    if LeonardosWardrobeManager.combatOutfit == "No Outfit" then
+        LeonardosWardrobeManager.combatOutfitIndex = 0
+    else
+        for i=1,GetNumUnlockedOutfits() do
+            if GetOutfitName(0, i) == LeonardosWardrobeManager.combatOutfit then
+                LeonardosWardrobeManager.combatOutfitIndex = i
+                break
+            end
+        end
+    end
+
+    LeonardosWardrobeManager.savedVariables.combatOutfit = LeonardosWardrobeManager.combatOutfit
+    LeonardosWardrobeManager.savedVariables.combatOutfitIndex = LeonardosWardrobeManager.combatOutfitIndex
+end
+
 local optionsData = {
     [1] = {
+        type = "dropdown",
+        name = "Default Outfit",
+        tooltip = "The outfit to be worn by default",
+        choices = {},
+        getFunc = function() return LeonardosWardrobeManager.savedVariables.defaultOutfit end,
+        setFunc = function(var) LeonardosWardrobeManager.SetDefaultOutfit(var) end,
+    },
+    [2] = {
         type = "dropdown",
         name = "Combat Outfit",
         tooltip = "The outfit to be switched to upon entering combat",
         choices = {},
-        getFunc = function() return "No Outfit" end,
-        setFunc = function(var) print(var) end,
+        getFunc = function() return LeonardosWardrobeManager.savedVariables.combatOutfit end,
+        setFunc = function(var) LeonardosWardrobeManager.SetCombatOutfit(var) end,
     },
 }
 
@@ -36,17 +98,31 @@ function LeonardosWardrobeManager.OnPlayerCombatState(event, inCombat)
 
         -- ...and then announce the change.
         if inCombat then
-            d("Entering combat.")
-            EquipOutfit(0, 1)
+            if LeonardosWardrobeManager.combatOutfitIndex == 0 then
+                UnequipOutfit()
+            else
+                EquipOutfit(0, LeonardosWardrobeManager.combatOutfitIndex)
+            end
         else
-            d("Exiting combat.")
-            UnequipOutfit()
+            if LeonardosWardrobeManager.defaultOutfitIndex == 0 then
+                UnequipOutfit()
+            else
+                EquipOutfit(0, LeonardosWardrobeManager.defaultOutfitIndex)
+            end
         end
 
     end
 end
 
 function LeonardosWardrobeManager:Initialize()
+    LeonardosWardrobeManager.savedVariables = ZO_SavedVars:NewCharacterIdSettings("LeonardosWardrobeManagerVars", LeonardosWardrobeManager.variableVersion, nil, LeonardosWardrobeManager.Default, GetWorldName())
+
+    self.combatOutfit = LeonardosWardrobeManager.savedVariables.combatOutfit
+    self.combatOutfitIndex = LeonardosWardrobeManager.savedVariables.combatOutfitIndex
+
+    self.defaultOutfit = LeonardosWardrobeManager.savedVariables.defaultOutfit
+    self.defaultOutfitIndex = LeonardosWardrobeManager.savedVariables.defaultOutfitIndex
+
     self.inCombat = IsUnitInCombat("player")
 
     for i=1,GetNumUnlockedOutfits() do
@@ -54,6 +130,7 @@ function LeonardosWardrobeManager:Initialize()
     end
 
     optionsData[1].choices = self.allOutfits
+    optionsData[2].choices = self.allOutfits
 
     LAM2:RegisterAddonPanel("LeonardosWardrobeManagerOptions", panelData)
     LAM2:RegisterOptionControls("LeonardosWardrobeManagerOptions", optionsData)
