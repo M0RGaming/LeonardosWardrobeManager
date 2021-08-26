@@ -3,15 +3,6 @@ LeonardosWardrobeManager = {}
 LeonardosWardrobeManager.name = "LeonardosWardrobeManager"
 LeonardosWardrobeManager.allOutfits = {"No Outfit"}
 
-LeonardosWardrobeManager.defaultOutfit = nil
-LeonardosWardrobeManager.defaultOutfitIndex = nil
-
-LeonardosWardrobeManager.combatOutfit = nil
-LeonardosWardrobeManager.combatOutfitIndex = nil
-
-LeonardosWardrobeManager.stealthOutfit = nil
-LeonardosWardrobeManager.stealthOutfitIndex = nil
-
 LeonardosWardrobeManager.variableVersion = 3
 LeonardosWardrobeManager.default = {
     defaultOutfit = "No Outfit",
@@ -24,22 +15,20 @@ LeonardosWardrobeManager.default = {
     stealthOutfitIndex = 0
 }
 
-local panelData = {
+panelData = {
     type = "panel",
     name = "Leonardo's Wardrobe Manager",
 }
 
-local LAM2 = LibAddonMenu2
+LAM2 = LibAddonMenu2
 
-local OUTFIT_OFFSET = 1
+OUTFIT_OFFSET = 1
 
 function LeonardosWardrobeManager.UpdateOutfit(state, name, index)
     local state_d = string.lower(state) .. "Outfit"
 
-    LeonardosWardrobeManager[state_d] = name
-    LeonardosWardrobeManager[state_d .. "Index"] = index
-    LeonardosWardrobeManager.savedVariables[state_d] = LeonardosWardrobeManager[state_d]
-    LeonardosWardrobeManager.savedVariables[state_d .. "Index"] = LeonardosWardrobeManager[state_d .. "Index"]
+    LeonardosWardrobeManager.savedVariables[state_d] = name
+    LeonardosWardrobeManager.savedVariables[state_d .. "Index"] = index
 end
 
 function LeonardosWardrobeManager.SetStateOutfit(state, name)
@@ -63,7 +52,7 @@ function LeonardosWardrobeManager.SetStateOutfit(state, name)
     LeonardosWardrobeManager.UpdateOutfit(state, name, index)
 end
 
-local optionsData = {
+optionsData = {
     [1] = {
         type = "description",
         title = nil,
@@ -104,43 +93,34 @@ function LeonardosWardrobeManager.ChangeOutfit(index)
     end
 end
 
-function LeonardosWardrobeManager.OnPlayerCombatState(event, inCombat)
+function LeonardosWardrobeManager.OnPlayerCombatState(_, inCombat)
     if inCombat ~= LeonardosWardrobeManager.inCombat then
         LeonardosWardrobeManager.inCombat = inCombat
         if inCombat then
-            LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.combatOutfitIndex)
+            LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.savedVariables.combatOutfitIndex)
         else
             if LeonardosWardrobeManager.inStealth then
-                LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.stealthOutfitIndex)
+                LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.savedVariables.stealthOutfitIndex)
             else
-                LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.defaultOutfitIndex)
+                LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.savedVariables.defaultOutfitIndex)
             end
         end
     end
 end
 
-function LeonardosWardrobeManager.OnPlayerStealthState(event, unitTag, StealthState)
+function LeonardosWardrobeManager.OnPlayerStealthState(_, _, StealthState)
     if StealthState ~= LeonardosWardrobeManager.inStealth then
         LeonardosWardrobeManager.inStealth = StealthState
         if StealthState > 0 then
-            LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.stealthOutfitIndex)
+            LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.savedVariables.stealthOutfitIndex)
         else
-            LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.defaultOutfitIndex)
+            LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.savedVariables.defaultOutfitIndex)
         end
     end
 end
 
 function LeonardosWardrobeManager:Initialize()
     LeonardosWardrobeManager.savedVariables = ZO_SavedVars:NewCharacterIdSettings("LeonardosWardrobeManagerVars", LeonardosWardrobeManager.variableVersion, nil, LeonardosWardrobeManager.Default, GetWorldName())
-
-    self.defaultOutfit = LeonardosWardrobeManager.savedVariables.defaultOutfit
-    self.defaultOutfitIndex = LeonardosWardrobeManager.savedVariables.defaultOutfitIndex
-
-    self.combatOutfit = LeonardosWardrobeManager.savedVariables.combatOutfit
-    self.combatOutfitIndex = LeonardosWardrobeManager.savedVariables.combatOutfitIndex
-
-    self.stealthOutfit = LeonardosWardrobeManager.savedVariables.stealthOutfit
-    self.stealthOutfitIndex = LeonardosWardrobeManager.savedVariables.stealthOutfitIndex
 
     self.inCombat = IsUnitInCombat("player")
     self.inStealth = GetUnitStealthState("player")
@@ -160,7 +140,7 @@ function LeonardosWardrobeManager:Initialize()
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_STEALTH_STATE_CHANGED, self.OnPlayerStealthState)
 end
 
-function LeonardosWardrobeManager.OnAddOnLoaded(event, addonName)
+function LeonardosWardrobeManager.OnAddOnLoaded(_, addonName)
     if addonName == LeonardosWardrobeManager.name then
         LeonardosWardrobeManager:Initialize()
     end
