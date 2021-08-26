@@ -7,4 +7,3 @@
 ## DependsOn: LibAddonMenu-2.0>=28
 
 LeonardosWardrobeManager.lua
-Settings.lua

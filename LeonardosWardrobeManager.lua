@@ -14,13 +14,6 @@ local LAM2 = LibAddonMenu2
 
 local optionsData = {
     [1] = {
-        type = "checkbox",
-        name = "My Checkbox",
-        tooltip = "Checkbox's tooltip text.",
-        getFunc = function() return true end,
-        setFunc = function(value) d(value) end,
-    },
-    [2] = {
         type = "dropdown",
         name = "My Dropdown",
         tooltip = "Dropdown's tooltip text.",
@@ -28,28 +21,10 @@ local optionsData = {
         getFunc = function() return "of" end,
         setFunc = function(var) print(var) end,
     },
-    [3] = {
-        type = "slider",
-        name = "My Slider",
-        tooltip = "Slider's tooltip text.",
-        min = 0,
-        max = 20,
-        getFunc = function() return 3 end,
-        setFunc = function(value) d(value) end,
-    },
 }
 
 LAM2:RegisterAddonPanel("LeonardosWardrobeManagerOptions", panelData)
 LAM2:RegisterOptionControls("LeonardosWardrobeManagerOptions", optionsData)
-
-LeonardosWardrobeManager.Default = {
-    OffsetX = 20,
-    OffsetY = 75,
-    Show = true,
-    StaminaBarColor = {0, 1, 0, 1},
-    BarWidth = 300,
-    BarHeight = 50,
-}
 
 function LeonardosWardrobeManager.OnPlayerCombatState(event, inCombat)
     -- The ~= operator is "not equal to" in Lua.
@@ -60,7 +35,7 @@ function LeonardosWardrobeManager.OnPlayerCombatState(event, inCombat)
         -- ...and then announce the change.
         if inCombat then
             d("Entering combat.")
-            EquipOutfit(2)
+            EquipOutfit(0, 2)
         else
             d("Exiting combat.")
             UnequipOutfit()
