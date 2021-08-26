@@ -1,8 +1,5 @@
--- First, we create a namespace for our addon by declaring a top-level table that will hold everything else.
 LeonardosWardrobeManager = {}
 
--- This isn't strictly necessary, but we'll use this string later when registering events.
--- Better to define it in a single place rather than retyping the same string.
 LeonardosWardrobeManager.name = "LeonardosWardrobeManager"
 LeonardosWardrobeManager.allOutfits = {"No Outfit"}
 
@@ -30,45 +27,43 @@ local LAM2 = LibAddonMenu2
 
 local OUTFIT_OFFSET = 1
 
-function LeonardosWardrobeManager.SetDefaultOutfit(name)
-    LeonardosWardrobeManager.defaultOutfit = name
-    if LeonardosWardrobeManager.defaultOutfit == "No Outfit" then
-        LeonardosWardrobeManager.defaultOutfitIndex = 0
+function LeonardosWardrobeManager.SetStateOutfit(state, name)
+    local index
+
+    if name == "No Outfit" then
+        index = 0
     else
         for i=1,GetNumUnlockedOutfits() do
-            if GetOutfitName(0, i) == LeonardosWardrobeManager.defaultOutfit then
-                LeonardosWardrobeManager.defaultOutfitIndex = i
+            if GetOutfitName(0, i) == name then
+                index = i
                 break
             end
         end
     end
 
-    if LeonardosWardrobeManager.defaultOutfitIndex == 0 and GetEquippedOutfitIndex() ~= nil then
-        UnequipOutfit()
-    else if LeonardosWardrobeManager.defaultOutfitIndex ~= GetEquippedOutfitIndex() then
-        EquipOutfit(0, LeonardosWardrobeManager.defaultOutfitIndex)
-    end
-    end
-
-    LeonardosWardrobeManager.savedVariables.defaultOutfit = LeonardosWardrobeManager.defaultOutfit
-    LeonardosWardrobeManager.savedVariables.defaultOutfitIndex = LeonardosWardrobeManager.defaultOutfitIndex
-end
-
-function LeonardosWardrobeManager.SetCombatOutfit(name)
-    LeonardosWardrobeManager.combatOutfit = name
-    if LeonardosWardrobeManager.combatOutfit == "No Outfit" then
-        LeonardosWardrobeManager.combatOutfitIndex = 0
-    else
-        for i=1,GetNumUnlockedOutfits() do
-            if GetOutfitName(0, i) == LeonardosWardrobeManager.combatOutfit then
-                LeonardosWardrobeManager.combatOutfitIndex = i
-                break
-            end
+    if state == "DEFAULT" then
+        if index == 0 and GetEquippedOutfitIndex() ~= nil then
+            UnequipOutfit()
+        elseif index ~= GetEquippedOutfitIndex() then
+            EquipOutfit(0, index)
         end
-    end
 
-    LeonardosWardrobeManager.savedVariables.combatOutfit = LeonardosWardrobeManager.combatOutfit
-    LeonardosWardrobeManager.savedVariables.combatOutfitIndex = LeonardosWardrobeManager.combatOutfitIndex
+        LeonardosWardrobeManager.defaultOutfit = name
+        LeonardosWardrobeManager.defaultOutfitIndex = index
+        LeonardosWardrobeManager.savedVariables.defaultOutfit = LeonardosWardrobeManager.defaultOutfit
+        LeonardosWardrobeManager.savedVariables.defaultOutfitIndex = LeonardosWardrobeManager.defaultOutfitIndex
+    elseif state == "COMBAT" then
+        if index == 0 and GetEquippedOutfitIndex() ~= nil then
+            UnequipOutfit()
+        elseif index ~= GetEquippedOutfitIndex() then
+            EquipOutfit(0, index)
+        end
+
+        LeonardosWardrobeManager.combatOutfit = name
+        LeonardosWardrobeManager.combatOutfitIndex = index
+        LeonardosWardrobeManager.savedVariables.combatOutfit = LeonardosWardrobeManager.combatOutfit
+        LeonardosWardrobeManager.savedVariables.combatOutfitIndex = LeonardosWardrobeManager.combatOutfitIndex
+    end
 end
 
 local optionsData = {
@@ -78,7 +73,7 @@ local optionsData = {
         tooltip = "The outfit to be worn by default",
         choices = {},
         getFunc = function() return LeonardosWardrobeManager.savedVariables.defaultOutfit end,
-        setFunc = function(var) LeonardosWardrobeManager.SetDefaultOutfit(var) end,
+        setFunc = function(var) LeonardosWardrobeManager.SetStateOutfit("DEFAULT", var) end,
     },
     [2] = {
         type = "dropdown",
@@ -86,7 +81,7 @@ local optionsData = {
         tooltip = "The outfit to be switched to upon entering combat",
         choices = {},
         getFunc = function() return LeonardosWardrobeManager.savedVariables.combatOutfit end,
-        setFunc = function(var) LeonardosWardrobeManager.SetCombatOutfit(var) end,
+        setFunc = function(var) LeonardosWardrobeManager.SetStateOutfit("COMBAT", var) end,
     },
 }
 
