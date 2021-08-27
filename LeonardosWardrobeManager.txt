@@ -8,3 +8,6 @@
 ## SavedVariables: LeonardosWardrobeManagerVars
 
 LeonardosWardrobeManager.lua
+
+LibFeedback/LibFeedback.txt
+LibFeedback/LibFeedback.lua
