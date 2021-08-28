@@ -18,6 +18,7 @@ LeonardosWardrobeManager.default = {
 panelData = {
     type = "panel",
     name = "Leonardo's Wardrobe Manager",
+    registerForRefresh = true
 }
 
 LAM2 = LibAddonMenu2
@@ -113,10 +114,10 @@ function LeonardosWardrobeManager.OnOutfitRenamed(event, response, index) -- TOD
     for i=1,GetNumUnlockedOutfits() do
         LeonardosWardrobeManager.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(0, i)
     end
-    d(LeonardosWardrobeManager.allOutfits)
-    LeonardosWardrobeManager_Default_Dropdown:UpdateChoices(LeonardosWardrobeManager.allOutfits)
-    LeonardosWardrobeManager_Combat_Dropdown:UpdateChoices(LeonardosWardrobeManager.allOutfits)
-    LeonardosWardrobeManager_Stealth_Dropdown:UpdateChoices(LeonardosWardrobeManager.allOutfits)
+
+    LeonardosWardrobeManager_Default_Dropdown:UpdateChoices()
+    LeonardosWardrobeManager_Combat_Dropdown:UpdateChoices()
+    LeonardosWardrobeManager_Stealth_Dropdown:UpdateChoices()
 end
 
 isFirstTimePlayerActivated = true
@@ -180,10 +181,13 @@ function LeonardosWardrobeManager:Initialize()
 
     -- TODO: Make this work / not crash ui
     button, LeonardosWardrobeManager.feedback = LibFeedback:initializeFeedbackWindow(
-            LeonardosWardrobeManager, "Leonardo's Wardrobe Manager",LeonardosWardrobeManager_Feedback, "@Leonardo1123",
-            {CENTER , LeonardosWardrobeManager_Feedback , CENTER , 10, 10},  {0,5000,50000},
-            "Send Feedback (or a tip)! If you're reporting a bug/issue, please include as much of the error as possible. Also, consider reporting the error on ESOUI or GitHub.")
-    LeonardosWardrobeManager.feedback:SetHidden(true)
+            LeonardosWardrobeManager,
+            "Leonardo's Wardrobe Manager",
+            WINDOW_MANAGER:CreateTopLevelWindow("LeonardosWardrobeDummyControl"),
+            "@Leonardo1123",
+            {CENTER , GuiRoot , CENTER , 10, 10},
+            {0,5000,50000},
+            "Send ")
 
     LAM2:RegisterAddonPanel("LeonardosWardrobeManagerOptions", panelData)
     LAM2:RegisterOptionControls("LeonardosWardrobeManagerOptions", optionsData)
