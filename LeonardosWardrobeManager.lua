@@ -1,11 +1,13 @@
 LAM2 = LibAddonMenu2
-LeonardosWardrobeManager = {}
+LWM = {}
 
-LeonardosWardrobeManager.name = "LeonardosWardrobeManager"
-LeonardosWardrobeManager.allOutfits = {"No Outfit"}
+LWM.name = "LeonardosWardrobeManager"
+LWM.allOutfits = { "No Outfit"}
 
-LeonardosWardrobeManager.variableVersion = 6
-LeonardosWardrobeManager.default = {
+LWM.LibFeedbackInstalled = false
+
+LWM.variableVersion = 6
+LWM.default = {
     defaultOutfit = "No Outfit",
     defaultOutfitIndex = 0,
 
@@ -22,13 +24,11 @@ panelData = {
     registerForRefresh = true
 }
 
-SLASH_COMMANDS['/lwmfeedback'] = function(_)
-    LeonardosWardrobeManager.feedback:SetHidden(false)
-end
+
 
 OUTFIT_OFFSET = 1
 
-function LeonardosWardrobeManager.SetStateOutfit(state, name)
+function LWM.SetStateOutfit(state, name)
     local index
 
     if name == "No Outfit" then
@@ -43,13 +43,13 @@ function LeonardosWardrobeManager.SetStateOutfit(state, name)
     end
 
     if state == "DEFAULT" then
-        LeonardosWardrobeManager.ChangeOutfit(index)
+        LWM.ChangeOutfit(index)
     end
 
     local state_d = string.lower(state) .. "Outfit"
 
-    LeonardosWardrobeManager.savedVariables[state_d] = name
-    LeonardosWardrobeManager.savedVariables[state_d .. "Index"] = index
+    LWM.savedVariables[state_d] = name
+    LWM.savedVariables[state_d .. "Index"] = index
 end
 
 optionsData = {
@@ -63,9 +63,9 @@ optionsData = {
         type = "dropdown",
         name = "Default Outfit",
         tooltip = "The outfit to be worn by default",
-        choices = LeonardosWardrobeManager.allOutfits,
-        getFunc = function() return LeonardosWardrobeManager.savedVariables.defaultOutfit end,
-        setFunc = function(var) LeonardosWardrobeManager.SetStateOutfit("DEFAULT", var) end,
+        choices = LWM.allOutfits,
+        getFunc = function() return LWM.savedVariables.defaultOutfit end,
+        setFunc = function(var) LWM.SetStateOutfit("DEFAULT", var) end,
         reference = "LeonardosWardrobeManager_Default_Dropdown"
     },
     [3] = {
@@ -78,25 +78,25 @@ optionsData = {
                 type = "dropdown",
                 name = "Combat Outfit",
                 tooltip = "The outfit to be switched to upon entering combat",
-                choices = LeonardosWardrobeManager.allOutfits,
-                getFunc = function() return LeonardosWardrobeManager.savedVariables.combatOutfit end,
-                setFunc = function(var) LeonardosWardrobeManager.SetStateOutfit("COMBAT", var) end,
+                choices = LWM.allOutfits,
+                getFunc = function() return LWM.savedVariables.combatOutfit end,
+                setFunc = function(var) LWM.SetStateOutfit("COMBAT", var) end,
                 reference = "LeonardosWardrobeManager_Combat_Dropdown"
             },
             [2] = {
                 type = "dropdown",
                 name = "Stealth Outfit",
                 tooltip = "The outfit to be switched to upon entering stealth",
-                choices = LeonardosWardrobeManager.allOutfits,
-                getFunc = function() return LeonardosWardrobeManager.savedVariables.stealthOutfit end,
-                setFunc = function(var) LeonardosWardrobeManager.SetStateOutfit("STEALTH", var) end,
+                choices = LWM.allOutfits,
+                getFunc = function() return LWM.savedVariables.stealthOutfit end,
+                setFunc = function(var) LWM.SetStateOutfit("STEALTH", var) end,
                 reference = "LeonardosWardrobeManager_Stealth_Dropdown"
             },
         }
     }
 }
 
-function LeonardosWardrobeManager.ChangeOutfit(index)
+function LWM.ChangeOutfit(index)
     if index == 0 then
         UnequipOutfit()
     else
@@ -104,9 +104,9 @@ function LeonardosWardrobeManager.ChangeOutfit(index)
     end
 end
 
-function LeonardosWardrobeManager.OnOutfitRenamed(event, response, index)
+function LWM.OnOutfitRenamed(event, response, index)
     for i=1,GetNumUnlockedOutfits() do
-        LeonardosWardrobeManager.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(0, i)
+        LWM.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(0, i)
     end
 
     LeonardosWardrobeManager_Default_Dropdown:UpdateChoices()
@@ -116,11 +116,11 @@ end
 
 isFirstTimePlayerActivated = true
 
-function LeonardosWardrobeManager.OnPlayerActivated(_, initial)
+function LWM.OnPlayerActivated(_, initial)
     if initial then
         if isFirstTimePlayerActivated == false then
             -- After fast travel
-            LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.savedVariables.defaultOutfitIndex)
+            LWM.ChangeOutfit(LWM.savedVariables.defaultOutfitIndex)
         else
             -- --------------------------------- after login
             isFirstTimePlayerActivated = false
@@ -131,44 +131,45 @@ function LeonardosWardrobeManager.OnPlayerActivated(_, initial)
     end
 end
 
-function LeonardosWardrobeManager.OnPlayerCombatState(_, inCombat)
-    if inCombat ~= LeonardosWardrobeManager.inCombat then
-        LeonardosWardrobeManager.inCombat = inCombat
-        if LeonardosWardrobeManager.inCombat then
-            LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.savedVariables.combatOutfitIndex)
+function LWM.OnPlayerCombatState(_, inCombat)
+    if inCombat ~= LWM.inCombat then
+        LWM.inCombat = inCombat
+        if LWM.inCombat then
+            LWM.ChangeOutfit(LWM.savedVariables.combatOutfitIndex)
         else
-            if LeonardosWardrobeManager.inStealth > 0 then
-                LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.savedVariables.stealthOutfitIndex)
+            if LWM.inStealth > 0 then
+                LWM.ChangeOutfit(LWM.savedVariables.stealthOutfitIndex)
             else
-                LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.savedVariables.defaultOutfitIndex)
+                LWM.ChangeOutfit(LWM.savedVariables.defaultOutfitIndex)
             end
         end
     end
 end
 
-function LeonardosWardrobeManager.OnPlayerStealthState(_, unitTag, StealthState)
-    if StealthState ~= LeonardosWardrobeManager.inStealth and unitTag == "player" then
-        LeonardosWardrobeManager.inStealth = StealthState
-        if LeonardosWardrobeManager.inStealth > 0 then
-            LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.savedVariables.stealthOutfitIndex)
+function LWM.OnPlayerStealthState(_, unitTag, StealthState)
+    d(LWM.LibFeedbackInstalled)
+    if StealthState ~= LWM.inStealth and unitTag == "player" then
+        LWM.inStealth = StealthState
+        if LWM.inStealth > 0 then
+            LWM.ChangeOutfit(LWM.savedVariables.stealthOutfitIndex)
         else
-            if LeonardosWardrobeManager.inCombat then
-                LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.savedVariables.combatOutfitIndex)
+            if LWM.inCombat then
+                LWM.ChangeOutfit(LWM.savedVariables.combatOutfitIndex)
             else
-                LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.savedVariables.defaultOutfitIndex)
+                LWM.ChangeOutfit(LWM.savedVariables.defaultOutfitIndex)
             end
         end
     end
 end
 
-function LeonardosWardrobeManager.OnPlayerRes(_)
-    LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.savedVariables.defaultOutfitIndex)
+function LWM.OnPlayerRes(_)
+    LWM.ChangeOutfit(LWM.savedVariables.defaultOutfitIndex)
 end
 
-function LeonardosWardrobeManager:Initialize()
-    LeonardosWardrobeManager.savedVariables = ZO_SavedVars:NewCharacterIdSettings(
+function LWM:Initialize()
+    LWM.savedVariables = ZO_SavedVars:NewCharacterIdSettings(
             "LeonardosWardrobeManagerVars",
-            LeonardosWardrobeManager.variableVersion, nil, LeonardosWardrobeManager.default, GetWorldName())
+            LWM.variableVersion, nil, LWM.default, GetWorldName())
 
     self.inCombat = IsUnitInCombat("player")
     self.inStealth = GetUnitStealthState("player")
@@ -183,15 +184,21 @@ function LeonardosWardrobeManager:Initialize()
         self.allOutfits[i + OUTFIT_OFFSET] = name
     end
 
-    button, LeonardosWardrobeManager.feedback = LibFeedback:initializeFeedbackWindow(
-            LeonardosWardrobeManager,
-            "Leonardo's Wardrobe Manager",
-            WINDOW_MANAGER:CreateTopLevelWindow("LeonardosWardrobeDummyControl"),
-            "@Leonardo1123",
-            {CENTER , GuiRoot , CENTER , 10, 10},
-            {0,5000,50000},
-            "Send feedback or a tip! Please consider reporting any bugs to ESOUI or GitHub as well.")
-    button:SetHidden(true)
+    if LWM.LibFeedbackInstalled then
+        button, LWM.feedback = LibFeedback:initializeFeedbackWindow(
+                LWM,
+                "Leonardo's Wardrobe Manager",
+                WINDOW_MANAGER:CreateTopLevelWindow("LeonardosWardrobeDummyControl"),
+                "@Leonardo1123",
+                {CENTER , GuiRoot , CENTER , 10, 10},
+                {0,5000,50000},
+                "Send feedback or a tip! Please consider reporting any bugs to ESOUI or GitHub as well.")
+        button:SetHidden(true)
+
+        SLASH_COMMANDS['/lwmfeedback'] = function(_)
+            LWM.feedback:SetHidden(false)
+        end
+    end
 
     LAM2:RegisterAddonPanel("LeonardosWardrobeManagerOptions", panelData)
     LAM2:RegisterOptionControls("LeonardosWardrobeManagerOptions", optionsData)
@@ -203,10 +210,13 @@ function LeonardosWardrobeManager:Initialize()
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_REINCARNATED, self.OnPlayerRes)
 end
 
-function LeonardosWardrobeManager.OnAddOnLoaded(_, addonName)
-    if addonName == LeonardosWardrobeManager.name then
-        LeonardosWardrobeManager:Initialize()
+function LWM.OnAddOnLoaded(_, addonName)
+    if addonName == "LibFeedback" then
+        LWM.LibFeedbackInstalled = true
+    elseif addonName == LWM.name then
+        LWM:Initialize()
+        EVENT_MANAGER:UnregisterForEvent(LWM.name, EVENT_ADD_ON_LOADED)
     end
 end
 
-EVENT_MANAGER:RegisterForEvent(LeonardosWardrobeManager.name, EVENT_ADD_ON_LOADED, LeonardosWardrobeManager.OnAddOnLoaded)
+EVENT_MANAGER:RegisterForEvent(LWM.name, EVENT_ADD_ON_LOADED, LWM.OnAddOnLoaded)

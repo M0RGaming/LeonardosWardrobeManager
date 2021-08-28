@@ -4,8 +4,9 @@
 ## AddOnVersion: 15
 ## Version: 0.1.5
 ## Description: Helps manage your wardrobe
-## DependsOn: LibAddonMenu-2.0>=28 LibFeedback
-## SavedVariables: LeonardosWardrobeManagerVars
+## DependsOn: LibAddonMenu-2.0>=28
+## OptionalDependsOn: LibFeedback
+## SavedVariables: LWMVars
 
 LeonardosWardrobeManager.lua
 
