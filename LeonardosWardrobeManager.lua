@@ -199,6 +199,10 @@ function LWM:Initialize()
         SLASH_COMMANDS['/lwmfeedback'] = function(_)
             LWM.feedback:SetHidden(false)
         end
+    else
+        SLASH_COMMANDS['/lwmfeedback'] = function(_)
+            d("Install LibFeedback to use this function.")
+        end
     end
 
     LAM2:RegisterAddonPanel("LWMOptions", panelData)
