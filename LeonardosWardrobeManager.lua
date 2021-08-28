@@ -152,8 +152,8 @@ function LeonardosWardrobeManager.OnPlayerCombatState(_, inCombat)
     end
 end
 
-function LeonardosWardrobeManager.OnPlayerStealthState(_, _, StealthState)
-    if StealthState ~= LeonardosWardrobeManager.inStealth then
+function LeonardosWardrobeManager.OnPlayerStealthState(_, unitTag, StealthState)
+    if StealthState ~= LeonardosWardrobeManager.inStealth and unitTag == "player" then
         LeonardosWardrobeManager.inStealth = StealthState
         if LeonardosWardrobeManager.inStealth > 0 then
             LeonardosWardrobeManager.ChangeOutfit(LeonardosWardrobeManager.savedVariables.stealthOutfitIndex)
@@ -188,6 +188,7 @@ function LeonardosWardrobeManager:Initialize()
             {CENTER , GuiRoot , CENTER , 10, 10},
             {0,5000,50000},
             "Send ")
+    button:SetHidden(true)
 
     LAM2:RegisterAddonPanel("LeonardosWardrobeManagerOptions", panelData)
     LAM2:RegisterOptionControls("LeonardosWardrobeManagerOptions", optionsData)
