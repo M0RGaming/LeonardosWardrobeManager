@@ -181,7 +181,7 @@ function LWM:Initialize()
         --if name == '' then
         --    RenameOutfit(0, i, "Outfit " .. tostring(i))
         --end
-        --self.allOutfits[i + OUTFIT_OFFSET] = name
+        self.allOutfits[i + OUTFIT_OFFSET] = name
     end
 
     if LWM.LibFeedbackInstalled then
