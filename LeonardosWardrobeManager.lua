@@ -1,10 +1,17 @@
-LAM2 = LibAddonMenu2
-LWM = {}
+-- Main Table
+LeonardosWardrobeManager = {}
 
+-- Aliases
+local LAM2 = LibAddonMenu2
+local LWM = LeonardosWardrobeManager
+
+-- Main Table Details
 LWM.name = "LeonardosWardrobeManager"
-LWM.allOutfits = {"No Outfit"}
+LWM.fullName = "Leonardo's Wardrobe Manager"
+LWM.allOutfits = { "No Outfit"}
+LWM.username = "@Leonardo1123"
 
-LWM.variableVersion = 4
+LWM.variableVersion = 6
 LWM.default = {
     defaultOutfit = "No Outfit",
     defaultOutfitIndex = 0,
@@ -16,19 +23,61 @@ LWM.default = {
     stealthOutfitIndex = 0
 }
 
-panelData = {
-    type = "panel",
-    name = "Leonardo's Wardrobe Manager",
-    registerForRefresh = true
-}
-
-SLASH_COMMANDS['/lwmfeedback'] = function(_)
-    LWM.feedback:SetHidden(false)
-end
+-- Check for optional dependencies
+LWM.LibFeedbackInstalled = false
 
 OUTFIT_OFFSET = 1
 
-function LWM.SetStateOutfit(state, name)
+panelData = {
+    type = "panel",
+    name = LWM.fullName,
+    registerForRefresh = true
+}
+
+optionsData = {
+    [1] = {
+        type = "description",
+        title = nil,
+        text = "Use command /lwmfeedback to leave feedback.",
+        width = "full",
+    },
+    [2] = {
+        type = "dropdown",
+        name = "Default Outfit",
+        tooltip = "The outfit to be worn by default",
+        choices = LWM.allOutfits,
+        getFunc = function() return LWM.vars.defaultOutfit end,
+        setFunc = function(var) LWM.SetStateOutfitChoice("DEFAULT", var) end,
+        reference = "LWM_Default_Dropdown"
+    },
+    [3] = {
+        type = "submenu",
+        name = "Combat",
+        tooltip = "Options related to combat and stealth", --(optional)
+        controls = {
+            [1] = {
+                type = "dropdown",
+                name = "Combat Outfit",
+                tooltip = "The outfit to be switched to upon entering combat",
+                choices = LWM.allOutfits,
+                getFunc = function() return LWM.vars.combatOutfit end,
+                setFunc = function(var) LWM.SetStateOutfitChoice("COMBAT", var) end,
+                reference = "LWM_Combat_Dropdown"
+            },
+            [2] = {
+                type = "dropdown",
+                name = "Stealth Outfit",
+                tooltip = "The outfit to be switched to upon entering stealth",
+                choices = LWM.allOutfits,
+                getFunc = function() return LWM.vars.stealthOutfit end,
+                setFunc = function(var) LWM.SetStateOutfitChoice("STEALTH", var) end,
+                reference = "LWM_Stealth_Dropdown"
+            },
+        }
+    }
+}
+
+function LWM.SetStateOutfitChoice(state, name)
     local index
 
     if name == "No Outfit" then
@@ -48,53 +97,11 @@ function LWM.SetStateOutfit(state, name)
 
     local state_d = string.lower(state) .. "Outfit"
 
-    LWM.savedVariables[state_d] = name
-    LWM.savedVariables[state_d .. "Index"] = index
+    LWM.vars[state_d] = name
+    LWM.vars[state_d .. "Index"] = index
 end
 
-optionsData = {
-    [1] = {
-        type = "description",
-        title = nil,
-        text = "Warning: If you rename an outfit, you will need to reload the UI for those changes to take effect here",
-        width = "full",
-    },
-    [2] = {
-        type = "dropdown",
-        name = "Default Outfit",
-        tooltip = "The outfit to be worn by default",
-        choices = LWM.allOutfits,
-        getFunc = function() return LWM.savedVariables.defaultOutfit end,
-        setFunc = function(var) LWM.SetStateOutfit("DEFAULT", var) end,
-        reference = "LWM_Default_Dropdown"
-    },
-    [3] = {
-        type = "submenu",
-        name = "Combat",
-        tooltip = "Options related to combat and stealth", --(optional)
-        reference = "LWM_Feedback",
-        controls = {
-            [1] = {
-                type = "dropdown",
-                name = "Combat Outfit",
-                tooltip = "The outfit to be switched to upon entering combat",
-                choices = LWM.allOutfits,
-                getFunc = function() return LWM.savedVariables.combatOutfit end,
-                setFunc = function(var) LWM.SetStateOutfit("COMBAT", var) end,
-                reference = "LWM_Combat_Dropdown"
-            },
-            [2] = {
-                type = "dropdown",
-                name = "Stealth Outfit",
-                tooltip = "The outfit to be switched to upon entering stealth",
-                choices = LWM.allOutfits,
-                getFunc = function() return LWM.savedVariables.stealthOutfit end,
-                setFunc = function(var) LWM.SetStateOutfit("STEALTH", var) end,
-                reference = "LWM_Stealth_Dropdown"
-            },
-        }
-    }
-}
+
 
 function LWM.ChangeOutfit(index)
     if index == 0 then
@@ -118,15 +125,12 @@ isFirstTimePlayerActivated = true
 
 function LWM.OnPlayerActivated(_, initial)
     if initial then
-        if isFirstTimePlayerActivated == false then
-            -- After fast travel
-            LWM.ChangeOutfit(LWM.savedVariables.defaultOutfitIndex)
-        else
-            -- --------------------------------- after login
+        if isFirstTimePlayerActivated == false then -- After fast travel
+            LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
+        else -- --------------------------------- after login
             isFirstTimePlayerActivated = false
         end
-    else
-        -- ------------------------------------- after reloadui
+    else -- ------------------------------------- after reloadui
         isFirstTimePlayerActivated = false
     end
 end
@@ -135,12 +139,12 @@ function LWM.OnPlayerCombatState(_, inCombat)
     if inCombat ~= LWM.inCombat then
         LWM.inCombat = inCombat
         if LWM.inCombat then
-            LWM.ChangeOutfit(LWM.savedVariables.combatOutfitIndex)
+            LWM.ChangeOutfit(LWM.vars.combatOutfitIndex)
         else
             if LWM.inStealth > 0 then
-                LWM.ChangeOutfit(LWM.savedVariables.stealthOutfitIndex)
+                LWM.ChangeOutfit(LWM.vars.stealthOutfitIndex)
             else
-                LWM.ChangeOutfit(LWM.savedVariables.defaultOutfitIndex)
+                LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
             end
         end
     end
@@ -150,42 +154,56 @@ function LWM.OnPlayerStealthState(_, unitTag, StealthState)
     if StealthState ~= LWM.inStealth and unitTag == "player" then
         LWM.inStealth = StealthState
         if LWM.inStealth > 0 then
-            LWM.ChangeOutfit(LWM.savedVariables.stealthOutfitIndex)
+            LWM.ChangeOutfit(LWM.vars.stealthOutfitIndex)
         else
             if LWM.inCombat then
-                LWM.ChangeOutfit(LWM.savedVariables.combatOutfitIndex)
+                LWM.ChangeOutfit(LWM.vars.combatOutfitIndex)
             else
-                LWM.ChangeOutfit(LWM.savedVariables.defaultOutfitIndex)
+                LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
             end
         end
     end
 end
 
 function LWM.OnPlayerRes(_)
-    LWM.ChangeOutfit(LWM.savedVariables.defaultOutfitIndex)
+    LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
 end
 
 function LWM:Initialize()
-    LWM.savedVariables = ZO_SavedVars:NewCharacterIdSettings(
-            "LWMVars",
-            LWM.variableVersion, nil, LWM.Default, GetWorldName())
+    LWM.vars = ZO_SavedVars:NewCharacterIdSettings("LWMVars", LWM.variableVersion, nil, LWM.default, GetWorldName())
 
     self.inCombat = IsUnitInCombat("player")
     self.inStealth = GetUnitStealthState("player")
 
     for i=1,GetNumUnlockedOutfits() do
-        self.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(0, i)
+        name = GetOutfitName(0, i)
+        -- TODO: This throws an error the first time it runs, fix it
+        --if name == '' then
+        --    RenameOutfit(0, i, "Outfit " .. tostring(i))
+        --end
+        --self.allOutfits[i + OUTFIT_OFFSET] = name
     end
 
-    button, LWM.feedback = LibFeedback:initializeFeedbackWindow(
-            LWM,
-            "Leonardo's Wardrobe Manager",
-            WINDOW_MANAGER:CreateTopLevelWindow("LeonardosWardrobeDummyControl"),
-            "@Leonardo1123",
-            {CENTER , GuiRoot , CENTER , 10, 10},
-            {0,5000,50000},
-            "Send ")
-    button:SetHidden(true)
+    if LWM.LibFeedbackInstalled then
+        button, LWM.feedback = LibFeedback:initializeFeedbackWindow(
+                LWM,
+                LWM.fullName,
+                WINDOW_MANAGER:CreateTopLevelWindow("LWMDummyControl"),
+                LWM.username,
+                {CENTER , GuiRoot , CENTER , 10, 10},
+                {0,5000,50000},
+                "Send feedback or a tip! Please consider reporting any bugs to ESOUI or GitHub as well."
+        )
+        button:SetHidden(true)
+
+        SLASH_COMMANDS['/lwmfeedback'] = function(_)
+            LWM.feedback:SetHidden(false)
+        end
+    else
+        SLASH_COMMANDS['/lwmfeedback'] = function(_)
+            d("Install LibFeedback to use this function.")
+        end
+    end
 
     LAM2:RegisterAddonPanel("LWMOptions", panelData)
     LAM2:RegisterOptionControls("LWMOptions", optionsData)
@@ -198,9 +216,12 @@ function LWM:Initialize()
 end
 
 function LWM.OnAddOnLoaded(_, addonName)
-    if addonName == LWM.name then
+    if addonName == "LibFeedback" then
+        LWM.LibFeedbackInstalled = true
+    elseif addonName == LWM.name then
         LWM:Initialize()
+        EVENT_MANAGER:UnregisterForEvent(LWM.name, EVENT_ADD_ON_LOADED)
     end
 end
 
-EVENT_MANAGER:RegisterForEvent(LWM.name,EVENT_ADD_ON_LOADED, LWM.OnAddOnLoaded)
+EVENT_MANAGER:RegisterForEvent(LWM.name, EVENT_ADD_ON_LOADED, LWM.OnAddOnLoaded)
