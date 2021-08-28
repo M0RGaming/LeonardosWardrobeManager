@@ -9,5 +9,7 @@
 
 LeonardosWardrobeManager.lua
 
+helper.lua
+
 LibFeedback/LibFeedback.txt
 LibFeedback/LibFeedback.lua
