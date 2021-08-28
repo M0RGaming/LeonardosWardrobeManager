@@ -175,9 +175,10 @@ function LeonardosWardrobeManager:Initialize()
 
     for i=1,GetNumUnlockedOutfits() do
         name = GetOutfitName(0, i)
-        if name == '' then
-            RenameOutfit(0, i, "Outfit " .. tostring(i))
-        end
+        -- TODO: This throws an error the first time it runs, fix it
+        --if name == '' then
+        --    RenameOutfit(0, i, "Outfit " .. tostring(i))
+        --end
         d("Outfit renamed")
         self.allOutfits[i + OUTFIT_OFFSET] = name
     end
