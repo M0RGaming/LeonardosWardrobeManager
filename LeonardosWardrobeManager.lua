@@ -23,9 +23,9 @@ panelData = {
 LAM2 = LibAddonMenu2
 
 -- TODO: Make this work / not crash ui
---SLASH_COMMANDS['/lwmfeedback'] = function(_)
---    LeonardosWardrobeManager.feedback:SetHidden(false)
---end
+SLASH_COMMANDS['/lwmfeedback'] = function(_)
+    LeonardosWardrobeManager.feedback:SetHidden(false)
+end
 
 OUTFIT_OFFSET = 1
 
@@ -71,7 +71,7 @@ optionsData = {
         choices = LeonardosWardrobeManager.allOutfits,
         getFunc = function() return LeonardosWardrobeManager.savedVariables.defaultOutfit end,
         setFunc = function(var) LeonardosWardrobeManager.SetStateOutfit("DEFAULT", var) end,
-        --reference = "LeonardosWardrobeManager_Default_Dropdown"
+        reference = "LeonardosWardrobeManager_Default_Dropdown"
     },
     [3] = {
         type = "submenu",
@@ -114,9 +114,9 @@ function LeonardosWardrobeManager.OnOutfitRenamed(event, response, index) -- TOD
         LeonardosWardrobeManager.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(0, i)
     end
     d(LeonardosWardrobeManager.allOutfits)
-    --LeonardosWardrobeManager_Default_Dropdown:UpdateChoices(LeonardosWardrobeManager.allOutfits)
-    --LeonardosWardrobeManager_Combat_Dropdown:UpdateChoices(LeonardosWardrobeManager.allOutfits)
-    --LeonardosWardrobeManager_Stealth_Dropdown:UpdateChoices(LeonardosWardrobeManager.allOutfits)
+    LeonardosWardrobeManager_Default_Dropdown:UpdateChoices(LeonardosWardrobeManager.allOutfits)
+    LeonardosWardrobeManager_Combat_Dropdown:UpdateChoices(LeonardosWardrobeManager.allOutfits)
+    LeonardosWardrobeManager_Stealth_Dropdown:UpdateChoices(LeonardosWardrobeManager.allOutfits)
 end
 
 isFirstTimePlayerActivated = true
@@ -179,11 +179,11 @@ function LeonardosWardrobeManager:Initialize()
     end
 
     -- TODO: Make this work / not crash ui
-    --button, LeonardosWardrobeManager.feedback = LibFeedback:initializeFeedbackWindow(
-    --        LeonardosWardrobeManager, "Leonardo's Wardrobe Manager",GuiRoot, "@Leonardo1123",
-    --        {CENTER , LeonardosWardrobeManager_Feedback , CENTER , 10, 10},  {0,5000,50000},
-    --        "Send Feedback (or a tip)! If you're reporting a bug/issue, please include as much of the error as possible. Also, consider reporting the error on ESOUI or GitHub.")
-    --LeonardosWardrobeManager.feedback:SetHidden(true)
+    button, LeonardosWardrobeManager.feedback = LibFeedback:initializeFeedbackWindow(
+            LeonardosWardrobeManager, "Leonardo's Wardrobe Manager",LeonardosWardrobeManager_Feedback, "@Leonardo1123",
+            {CENTER , LeonardosWardrobeManager_Feedback , CENTER , 10, 10},  {0,5000,50000},
+            "Send Feedback (or a tip)! If you're reporting a bug/issue, please include as much of the error as possible. Also, consider reporting the error on ESOUI or GitHub.")
+    LeonardosWardrobeManager.feedback:SetHidden(true)
 
     LAM2:RegisterAddonPanel("LeonardosWardrobeManagerOptions", panelData)
     LAM2:RegisterOptionControls("LeonardosWardrobeManagerOptions", optionsData)
