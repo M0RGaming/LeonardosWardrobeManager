@@ -8,7 +8,10 @@ I plan on adding many more cases of what can trigger an outfit change, like bein
 or even which ability bar you're using.
 
 Dependencies:
-Just [LibAddonMenu2](https://www.esoui.com/downloads/info7-LibAddonMenu.html)!
+[LibAddonMenu2](https://www.esoui.com/downloads/info7-LibAddonMenu.html)
+
+Optional:
+[LibFeedback](https://www.esoui.com/downloads/info2079-LibFeedback.html) to optimizing sending feedback in-game
 
 Please try it out, and please give me feedback! This mod is for you, so let me know what you want.
 
