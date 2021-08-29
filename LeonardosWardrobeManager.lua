@@ -169,6 +169,17 @@ function LWM.OnPlayerRes(_)
     LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
 end
 
+function LWM.OnPlayerUseOutfitStation(_)
+    for i=1,GetNumUnlockedOutfits() do
+        name = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
+        if name == "" then
+            name = "Outfit " .. tostring(i)
+            LWM.allOutfits[(i + OUTFIT_OFFSET)] = name
+            RenameOutfit(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i, name)
+        end
+    end
+end
+
 function LWM:Initialize()
     LWM.vars = ZO_SavedVars:NewCharacterIdSettings("LWMVars", LWM.variableVersion, nil, LWM.default, GetWorldName())
 
@@ -176,12 +187,7 @@ function LWM:Initialize()
     self.inStealth = GetUnitStealthState("player")
 
     for i=1,GetNumUnlockedOutfits() do
-        name = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
-        -- TODO: This throws an error the first time it runs, fix it
-        --if name == '' then
-        --    RenameOutfit(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i, "Outfit " .. tostring(i))
-        --end
-        self.allOutfits[i + OUTFIT_OFFSET] = name
+        self.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
     end
 
     if LWM.LibFeedbackInstalled then
@@ -213,6 +219,7 @@ function LWM:Initialize()
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_COMBAT_STATE, self.OnPlayerCombatState)
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_STEALTH_STATE_CHANGED, self.OnPlayerStealthState)
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_REINCARNATED, self.OnPlayerRes)
+    EVENT_MANAGER:RegisterForEvent(self.name, EVENT_DYEING_STATION_INTERACT_START , self.OnPlayerUseOutfitStation)
 end
 
 function LWM.OnAddOnLoaded(_, addonName)
