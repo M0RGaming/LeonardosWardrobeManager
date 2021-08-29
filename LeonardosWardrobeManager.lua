@@ -116,9 +116,9 @@ function LWM.OnOutfitRenamed(event, response, index)
         LWM.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(0, i)
     end
 
-    LWM_Default_Dropdown:UpdateChoices()
-    LWM_Combat_Dropdown:UpdateChoices()
-    LWM_Stealth_Dropdown:UpdateChoices()
+    if LWM_Default_Dropdown then LWM_Default_Dropdown:UpdateChoices() end
+    if LWM_Combat_Dropdown then LWM_Combat_Dropdown:UpdateChoices() end
+    if LWM_Stealth_Dropdown then LWM_Stealth_Dropdown:UpdateChoices() end
 end
 
 isFirstTimePlayerActivated = true
