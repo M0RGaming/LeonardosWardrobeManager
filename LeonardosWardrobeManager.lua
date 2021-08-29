@@ -84,7 +84,7 @@ function LWM.SetStateOutfitChoice(state, name)
         index = 0
     else
         for i=1,GetNumUnlockedOutfits() do
-            if GetOutfitName(0, i) == name then
+            if GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i) == name then
                 index = i
                 break
             end
@@ -107,13 +107,13 @@ function LWM.ChangeOutfit(index)
     if index == 0 then
         UnequipOutfit()
     else
-        EquipOutfit(0, index)
+        EquipOutfit(GAMEPLAY_ACTOR_CATEGORY_PLAYER, index)
     end
 end
 
 function LWM.OnOutfitRenamed(event, response, index)
     for i=1,GetNumUnlockedOutfits() do
-        LWM.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(0, i)
+        LWM.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
     end
 
     if LWM_Default_Dropdown then LWM_Default_Dropdown:UpdateChoices() end
@@ -176,10 +176,10 @@ function LWM:Initialize()
     self.inStealth = GetUnitStealthState("player")
 
     for i=1,GetNumUnlockedOutfits() do
-        name = GetOutfitName(0, i)
+        name = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
         -- TODO: This throws an error the first time it runs, fix it
         --if name == '' then
-        --    RenameOutfit(0, i, "Outfit " .. tostring(i))
+        --    RenameOutfit(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i, "Outfit " .. tostring(i))
         --end
         self.allOutfits[i + OUTFIT_OFFSET] = name
     end
