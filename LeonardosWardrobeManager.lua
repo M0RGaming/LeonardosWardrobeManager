@@ -84,7 +84,7 @@ function LWM.SetStateOutfitChoice(state, name)
         index = 0
     else
         for i=1,GetNumUnlockedOutfits() do
-            if GetOutfitName(0, i) == name then
+            if GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i) == name then
                 index = i
                 break
             end
@@ -107,18 +107,18 @@ function LWM.ChangeOutfit(index)
     if index == 0 then
         UnequipOutfit()
     else
-        EquipOutfit(0, index)
+        EquipOutfit(GAMEPLAY_ACTOR_CATEGORY_PLAYER, index)
     end
 end
 
 function LWM.OnOutfitRenamed(event, response, index)
     for i=1,GetNumUnlockedOutfits() do
-        LWM.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(0, i)
+        LWM.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
     end
 
-    LWM_Default_Dropdown:UpdateChoices()
-    LWM_Combat_Dropdown:UpdateChoices()
-    LWM_Stealth_Dropdown:UpdateChoices()
+    if LWM_Default_Dropdown then LWM_Default_Dropdown:UpdateChoices() end
+    if LWM_Combat_Dropdown then LWM_Combat_Dropdown:UpdateChoices() end
+    if LWM_Stealth_Dropdown then LWM_Stealth_Dropdown:UpdateChoices() end
 end
 
 isFirstTimePlayerActivated = true
@@ -169,19 +169,38 @@ function LWM.OnPlayerRes(_)
     LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
 end
 
+function LWM.OnPlayerUseOutfitStation(_)
+    for i=1,GetNumUnlockedOutfits() do
+        name = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
+        if name == "" then
+            name = "Outfit " .. tostring(i)
+            LWM.allOutfits[(i + OUTFIT_OFFSET)] = name
+            RenameOutfit(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i, name)
+        end
+    end
+end
+
 function LWM:Initialize()
     LWM.vars = ZO_SavedVars:NewCharacterIdSettings("LWMVars", LWM.variableVersion, nil, LWM.default, GetWorldName())
+
+    local handlers = ZO_AlertText_GetHandlers() -- TODO: Make this safer using code below
+    handlers[EVENT_OUTFIT_EQUIP_RESPONSE] = function() end
+
+    --local handlers = ZO_AlertText_GetHandlers()
+    --local originalHandler = handlers[EVENT_OUTFIT_CHANGE_RESPONSE]
+    --handlers[EVENT_OUTFIT_CHANGE_RESPONSE] = function(result, actorCategory, outfitIndex)
+    --    if result == something then
+    --        return false -- do not show the alert
+    --    else
+    --        return originalHandler(result, actorCategory, outfitIndex)
+    --    end
+    --end
 
     self.inCombat = IsUnitInCombat("player")
     self.inStealth = GetUnitStealthState("player")
 
     for i=1,GetNumUnlockedOutfits() do
-        name = GetOutfitName(0, i)
-        -- TODO: This throws an error the first time it runs, fix it
-        --if name == '' then
-        --    RenameOutfit(0, i, "Outfit " .. tostring(i))
-        --end
-        self.allOutfits[i + OUTFIT_OFFSET] = name
+        self.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
     end
 
     if LWM.LibFeedbackInstalled then
@@ -213,6 +232,7 @@ function LWM:Initialize()
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_COMBAT_STATE, self.OnPlayerCombatState)
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_STEALTH_STATE_CHANGED, self.OnPlayerStealthState)
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_REINCARNATED, self.OnPlayerRes)
+    EVENT_MANAGER:RegisterForEvent(self.name, EVENT_DYEING_STATION_INTERACT_START , self.OnPlayerUseOutfitStation)
 end
 
 function LWM.OnAddOnLoaded(_, addonName)

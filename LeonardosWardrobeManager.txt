@@ -1,8 +1,8 @@
 ## Title: Leonardo's Wardrobe Manager
 ## Author: Leonardo1123
 ## APIVersion: 101031
-## AddOnVersion: 15
-## Version: 0.1.5
+## AddOnVersion: 16
+## Version: 0.1.6
 ## Description: Helps manage your wardrobe
 ## DependsOn: LibAddonMenu-2.0>=28
 ## OptionalDependsOn: LibFeedback
