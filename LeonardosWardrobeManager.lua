@@ -183,6 +183,19 @@ end
 function LWM:Initialize()
     LWM.vars = ZO_SavedVars:NewCharacterIdSettings("LWMVars", LWM.variableVersion, nil, LWM.default, GetWorldName())
 
+    local handlers = ZO_AlertText_GetHandlers() -- TODO: Make this safer using code below
+    handlers[EVENT_OUTFIT_EQUIP_RESPONSE] = function() end
+
+    --local handlers = ZO_AlertText_GetHandlers()
+    --local originalHandler = handlers[EVENT_OUTFIT_CHANGE_RESPONSE]
+    --handlers[EVENT_OUTFIT_CHANGE_RESPONSE] = function(result, actorCategory, outfitIndex)
+    --    if result == something then
+    --        return false -- do not show the alert
+    --    else
+    --        return originalHandler(result, actorCategory, outfitIndex)
+    --    end
+    --end
+
     self.inCombat = IsUnitInCombat("player")
     self.inStealth = GetUnitStealthState("player")
 
