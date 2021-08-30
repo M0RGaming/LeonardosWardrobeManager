@@ -11,7 +11,7 @@ LWM.fullName = "Leonardo's Wardrobe Manager"
 LWM.allOutfits = { "No Outfit"}
 LWM.username = "@Leonardo1123"
 
-LWM.variableVersion = 6
+LWM.variableVersion = 7
 LWM.default = {
     defaultOutfit = "No Outfit",
     defaultOutfitIndex = 0,
@@ -19,14 +19,26 @@ LWM.default = {
     combatOutfit = "No Outfit",
     combatOutfitIndex = 0,
 
+    mainbarOutfit = "No Outfit",
+    mainbarOutfitIndex = 0,
+
+    backbarOutfit = "No Outfit",
+    backbarOutfitIndex = 0,
+
     stealthOutfit = "No Outfit",
-    stealthOutfitIndex = 0
+    stealthOutfitIndex = 0,
+
+    abilityToggle = false,
 }
 
 -- Check for optional dependencies
 LWM.LibFeedbackInstalled = false
 
+-- Misc. declarations
 OUTFIT_OFFSET = 1
+isFirstTimePlayerActivated = true
+
+-- LAM data
 
 panelData = {
     type = "panel",
@@ -53,18 +65,9 @@ optionsData = {
     [3] = {
         type = "submenu",
         name = "Combat",
-        tooltip = "Options related to combat and stealth", --(optional)
+        tooltip = "Options related to combat and stealth",
         controls = {
             [1] = {
-                type = "dropdown",
-                name = "Combat Outfit",
-                tooltip = "The outfit to be switched to upon entering combat",
-                choices = LWM.allOutfits,
-                getFunc = function() return LWM.vars.combatOutfit end,
-                setFunc = function(var) LWM.SetStateOutfitChoice("COMBAT", var) end,
-                reference = "LWM_Combat_Dropdown"
-            },
-            [2] = {
                 type = "dropdown",
                 name = "Stealth Outfit",
                 tooltip = "The outfit to be switched to upon entering stealth",
@@ -73,9 +76,54 @@ optionsData = {
                 setFunc = function(var) LWM.SetStateOutfitChoice("STEALTH", var) end,
                 reference = "LWM_Stealth_Dropdown"
             },
+            [2] = {
+                type = "divider",
+            },
+            [3] = {
+                type = "checkbox",
+                name = "Ability Bar Outfits",
+                tooltip = "The outfit to be switched to upon entering stealth",
+                choices = LWM.allOutfits,
+                getFunc = function() return LWM.vars.abilityToggle end,
+                setFunc = function() LWM.vars.abilityToggle = not LWM.vars.abilityToggle end,
+                reference = "LWM_Ability_Checkbox"
+            },
+            [4] = {
+                type = "dropdown",
+                name = "Combat Outfit",
+                tooltip = "The outfit to be switched to upon entering combat",
+                choices = LWM.allOutfits,
+                getFunc = function() return LWM.vars.combatOutfit end,
+                setFunc = function(var) LWM.SetStateOutfitChoice("COMBAT", var) end,
+                reference = "LWM_Combat_Dropdown",
+                disabled = function() return LWM.vars.abilityToggle  end
+            },
+            [5] = {
+                type = "dropdown",
+                name = "Main Bar Outfit",
+                tooltip = "The outfit to be switched to when using your main ability bar",
+                choices = LWM.allOutfits,
+                getFunc = function() return LWM.vars.combatOutfit end,
+                setFunc = function(var) LWM.SetStateOutfitChoice("MAINBAR", var) end,
+                reference = "LWM_Mainbar_Dropdown",
+                disabled = function() return not LWM.vars.abilityToggle  end
+            },
+            [6] = {
+                type = "dropdown",
+                name = "Backup Bar Outfit",
+                tooltip = "The outfit to be switched to when using your backup ability bar",
+                choices = LWM.allOutfits,
+                getFunc = function() return LWM.vars.combatOutfit end,
+                setFunc = function(var) LWM.SetStateOutfitChoice("BACKBAR", var) end,
+                reference = "LWM_Backbar_Dropdown",
+                disabled = function() return not LWM.vars.abilityToggle  end
+            },
+
         }
     }
 }
+
+-- Helper functions
 
 function LWM.SetStateOutfitChoice(state, name)
     local index
@@ -101,8 +149,6 @@ function LWM.SetStateOutfitChoice(state, name)
     LWM.vars[state_d .. "Index"] = index
 end
 
-
-
 function LWM.ChangeOutfit(index)
     if index == 0 then
         UnequipOutfit()
@@ -110,6 +156,8 @@ function LWM.ChangeOutfit(index)
         EquipOutfit(GAMEPLAY_ACTOR_CATEGORY_PLAYER, index)
     end
 end
+
+-- Event functions
 
 function LWM.OnOutfitRenamed(event, response, index)
     for i=1,GetNumUnlockedOutfits() do
@@ -119,9 +167,9 @@ function LWM.OnOutfitRenamed(event, response, index)
     if LWM_Default_Dropdown then LWM_Default_Dropdown:UpdateChoices() end
     if LWM_Combat_Dropdown then LWM_Combat_Dropdown:UpdateChoices() end
     if LWM_Stealth_Dropdown then LWM_Stealth_Dropdown:UpdateChoices() end
+    if LWM_Mainbar_Dropdown then LWM_Mainbar_Dropdown:UpdateChoices() end
+    if LWM_Backbar_Dropdown then LWM_Backbar_Dropdown:UpdateChoices() end
 end
-
-isFirstTimePlayerActivated = true
 
 function LWM.OnPlayerActivated(_, initial)
     if initial then
@@ -179,6 +227,8 @@ function LWM.OnPlayerUseOutfitStation(_)
         end
     end
 end
+
+-- "Main" functions
 
 function LWM:Initialize()
     LWM.vars = ZO_SavedVars:NewCharacterIdSettings("LWMVars", LWM.variableVersion, nil, LWM.default, GetWorldName())
