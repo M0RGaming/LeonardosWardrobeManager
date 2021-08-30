@@ -8,24 +8,16 @@ local LWM = LeonardosWardrobeManager
 -- Main Table Details
 LWM.name = "LeonardosWardrobeManager"
 LWM.fullName = "Leonardo's Wardrobe Manager"
-LWM.allOutfits = { "No Outfit"}
+LWM.allOutfits = {"No Outfit"}
+LWM.allOutfitChoices = {0}
 LWM.username = "@Leonardo1123"
 
-LWM.variableVersion = 7
+LWM.variableVersion = 8
 LWM.default = {
-    defaultOutfit = "No Outfit",
     defaultOutfitIndex = 0,
-
-    combatOutfit = "No Outfit",
     combatOutfitIndex = 0,
-
-    mainbarOutfit = "No Outfit",
     mainbarOutfitIndex = 0,
-
-    backbarOutfit = "No Outfit",
     backbarOutfitIndex = 0,
-
-    stealthOutfit = "No Outfit",
     stealthOutfitIndex = 0,
 
     abilityToggle = false,
@@ -58,7 +50,8 @@ optionsData = {
         name = "Default Outfit",
         tooltip = "The outfit to be worn by default",
         choices = LWM.allOutfits,
-        getFunc = function() return LWM.vars.defaultOutfit end,
+        choicesValues = LWM.allOutfitChoices,
+        getFunc = function() return LWM.vars.defaultOutfitIndex end,
         setFunc = function(var) LWM.SetStateOutfitChoice("DEFAULT", var) end,
         reference = "LWM_Default_Dropdown"
     },
@@ -72,7 +65,8 @@ optionsData = {
                 name = "Stealth Outfit",
                 tooltip = "The outfit to be switched to upon entering stealth",
                 choices = LWM.allOutfits,
-                getFunc = function() return LWM.vars.stealthOutfit end,
+                choicesValues = LWM.allOutfitChoices,
+                getFunc = function() return LWM.vars.stealthOutfitIndex end,
                 setFunc = function(var) LWM.SetStateOutfitChoice("STEALTH", var) end,
                 reference = "LWM_Stealth_Dropdown"
             },
@@ -93,7 +87,8 @@ optionsData = {
                 name = "Combat Outfit",
                 tooltip = "The outfit to be switched to upon entering combat",
                 choices = LWM.allOutfits,
-                getFunc = function() return LWM.vars.combatOutfit end,
+                choicesValues = LWM.allOutfitChoices,
+                getFunc = function() return LWM.vars.combatOutfitIndex end,
                 setFunc = function(var) LWM.SetStateOutfitChoice("COMBAT", var) end,
                 reference = "LWM_Combat_Dropdown",
                 disabled = function() return LWM.vars.abilityToggle  end
@@ -103,7 +98,8 @@ optionsData = {
                 name = "Main Bar Outfit",
                 tooltip = "The outfit to be switched to when using your main ability bar",
                 choices = LWM.allOutfits,
-                getFunc = function() return LWM.vars.mainbarOutfit end,
+                choicesValues = LWM.allOutfitChoices,
+                getFunc = function() return LWM.vars.mainbarOutfitIndex end,
                 setFunc = function(var) LWM.SetStateOutfitChoice("MAINBAR", var) end,
                 reference = "LWM_Mainbar_Dropdown",
                 disabled = function() return not LWM.vars.abilityToggle end
@@ -113,40 +109,24 @@ optionsData = {
                 name = "Backup Bar Outfit",
                 tooltip = "The outfit to be switched to when using your backup ability bar",
                 choices = LWM.allOutfits,
-                getFunc = function() return LWM.vars.backbarOutfit end,
+                choicesValues = LWM.allOutfitChoices,
+                getFunc = function() return LWM.vars.backbarOutfitIndex end,
                 setFunc = function(var) LWM.SetStateOutfitChoice("BACKBAR", var) end,
                 reference = "LWM_Backbar_Dropdown",
                 disabled = function() return not LWM.vars.abilityToggle end
             },
-
         }
     }
 }
 
 -- Helper functions
 
-function LWM.SetStateOutfitChoice(state, name)
-    local index
-
-    if name == "No Outfit" then
-        index = 0
-    else
-        for i=1,GetNumUnlockedOutfits() do
-            if GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i) == name then
-                index = i
-                break
-            end
-        end
-    end
-
+function LWM.SetStateOutfitChoice(state, index)
     if state == "DEFAULT" then
         LWM.ChangeOutfit(index)
     end
 
-    local state_d = string.lower(state) .. "Outfit"
-
-    LWM.vars[state_d] = name
-    LWM.vars[state_d .. "Index"] = index
+    LWM.vars[string.lower(state) .. "OutfitIndex"] = index
 end
 
 function LWM.ChangeOutfit(index)
@@ -239,7 +219,8 @@ function LWM.OnPlayerUseOutfitStation(_)
         name = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
         if name == "" then
             name = "Outfit " .. tostring(i)
-            LWM.allOutfits[(i + OUTFIT_OFFSET)] = name
+            LWM.allOutfits[i + OUTFIT_OFFSET] = name
+            LWM.allOutfitChoices[i + OUTFIT_OFFSET] = i
             RenameOutfit(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i, name)
         end
     end
@@ -268,6 +249,7 @@ function LWM:Initialize()
 
     for i=1,GetNumUnlockedOutfits() do
         self.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
+        self.allOutfitChoices[i + OUTFIT_OFFSET] = i
     end
 
     if LWM.LibFeedbackInstalled then
