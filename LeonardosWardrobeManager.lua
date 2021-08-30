@@ -103,20 +103,20 @@ optionsData = {
                 name = "Main Bar Outfit",
                 tooltip = "The outfit to be switched to when using your main ability bar",
                 choices = LWM.allOutfits,
-                getFunc = function() return LWM.vars.combatOutfit end,
+                getFunc = function() return LWM.vars.mainbarOutfit end,
                 setFunc = function(var) LWM.SetStateOutfitChoice("MAINBAR", var) end,
                 reference = "LWM_Mainbar_Dropdown",
-                disabled = function() return not LWM.vars.abilityToggle  end
+                disabled = function() return not LWM.vars.abilityToggle end
             },
             [6] = {
                 type = "dropdown",
                 name = "Backup Bar Outfit",
                 tooltip = "The outfit to be switched to when using your backup ability bar",
                 choices = LWM.allOutfits,
-                getFunc = function() return LWM.vars.combatOutfit end,
+                getFunc = function() return LWM.vars.backbarOutfit end,
                 setFunc = function(var) LWM.SetStateOutfitChoice("BACKBAR", var) end,
                 reference = "LWM_Backbar_Dropdown",
-                disabled = function() return not LWM.vars.abilityToggle  end
+                disabled = function() return not LWM.vars.abilityToggle end
             },
 
         }
@@ -157,9 +157,26 @@ function LWM.ChangeOutfit(index)
     end
 end
 
+function LWM.ChangeToCombatOutfit()
+    if LWM.inCombat then
+        if LWM.vars.abilityToggle then
+            local weaponPair, _ = GetActiveWeaponPairInfo()
+            local mainBar = (weaponPair == 1)
+
+            if mainBar then
+                LWM.ChangeOutfit(LWM.vars.mainbarOutfitIndex)
+            else
+                LWM.ChangeOutfit(LWM.vars.backbarOutfitIndex)
+            end
+        else
+            LWM.ChangeOutfit(LWM.vars.combatOutfitIndex)
+        end
+    end
+end
+
 -- Event functions
 
-function LWM.OnOutfitRenamed(event, response, index)
+function LWM.OnOutfitRenamed(_, _, _)
     for i=1,GetNumUnlockedOutfits() do
         LWM.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
     end
@@ -187,7 +204,7 @@ function LWM.OnPlayerCombatState(_, inCombat)
     if inCombat ~= LWM.inCombat then
         LWM.inCombat = inCombat
         if LWM.inCombat then
-            LWM.ChangeOutfit(LWM.vars.combatOutfitIndex)
+            LWM.ChangeToCombatOutfit()
         else
             if LWM.inStealth > 0 then
                 LWM.ChangeOutfit(LWM.vars.stealthOutfitIndex)
@@ -205,7 +222,7 @@ function LWM.OnPlayerStealthState(_, unitTag, StealthState)
             LWM.ChangeOutfit(LWM.vars.stealthOutfitIndex)
         else
             if LWM.inCombat then
-                LWM.ChangeOutfit(LWM.vars.combatOutfitIndex)
+                LWM.ChangeToCombatOutfit()
             else
                 LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
             end
@@ -283,6 +300,7 @@ function LWM:Initialize()
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_STEALTH_STATE_CHANGED, self.OnPlayerStealthState)
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_REINCARNATED, self.OnPlayerRes)
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_DYEING_STATION_INTERACT_START , self.OnPlayerUseOutfitStation)
+    EVENT_MANAGER:RegisterForEvent(self.name, EVENT_ACTIVE_WEAPON_PAIR_CHANGED , self.ChangeToCombatOutfit)
 end
 
 function LWM.OnAddOnLoaded(_, addonName)
