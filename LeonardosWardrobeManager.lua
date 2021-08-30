@@ -23,19 +23,21 @@ LWM.default = {
     perBarToggle = false,
     --perAbilityToggle = false,
 
-    abilitymain1OutfitIndex = 0,
-    abilitymain2OutfitIndex = 0,
-    abilitymain3OutfitIndex = 0,
-    abilitymain4OutfitIndex = 0,
-    abilitymain5OutfitIndex = 0,
-    abilitymain6OutfitIndex = 0,
+    --abilitymain1OutfitIndex = 0,
+    --abilitymain2OutfitIndex = 0,
+    --abilitymain3OutfitIndex = 0,
+    --abilitymain4OutfitIndex = 0,
+    --abilitymain5OutfitIndex = 0,
+    --abilitymain6OutfitIndex = 0,
+    --
+    --abilityback1OutfitIndex = 0,
+    --abilityback2OutfitIndex = 0,
+    --abilityback3OutfitIndex = 0,
+    --abilityback4OutfitIndex = 0,
+    --abilityback5OutfitIndex = 0,
+    --abilityback6OutfitIndex = 0,
 
-    abilityback1OutfitIndex = 0,
-    abilityback2OutfitIndex = 0,
-    abilityback3OutfitIndex = 0,
-    abilityback4OutfitIndex = 0,
-    abilityback5OutfitIndex = 0,
-    abilityback6OutfitIndex = 0,
+    houseOutfitIndex = 0
 }
 
 -- Check for optional dependencies
@@ -150,9 +152,9 @@ optionsData = {
                 reference = "LWM_Backbar_Dropdown",
                 disabled = function() return not LWM.vars.perBarToggle end
             },
-            [7] = {
-                type = "divider",
-            },
+            --[7] = {
+            --    type = "divider",
+            --},
             --[8] = {
             --    type = "checkbox",
             --    name = "Ability Bar Outfits",
@@ -311,6 +313,23 @@ optionsData = {
             --    }
             --}
         }
+    },
+    [4] = {
+        type = "submenu",
+        name = "Locations",
+        tooltip = "Options related to locations",
+        controls = {
+            [1] = {
+                type = "dropdown",
+                name = "House Outfit",
+                tooltip = "The outfit to be worn in houses",
+                choices = LWM.allOutfits,
+                choicesValues = LWM.allOutfitChoices,
+                getFunc = function() return LWM.vars.houseOutfitIndex end,
+                setFunc = function(var) LWM.SetStateOutfitChoice("HOUSE", var) end,
+                reference = "LWM_House_Dropdown"
+            },
+        }
     }
 }
 
@@ -361,12 +380,17 @@ function LWM.OnOutfitRenamed(_, _, _)
     if LWM_Stealth_Dropdown then LWM_Stealth_Dropdown:UpdateChoices() end
     if LWM_Mainbar_Dropdown then LWM_Mainbar_Dropdown:UpdateChoices() end
     if LWM_Backbar_Dropdown then LWM_Backbar_Dropdown:UpdateChoices() end
+    if LWM_House_Dropdown then LWM_House_Dropdown:UpdateChoices() end
 end
 
 function LWM.OnPlayerActivated(_, initial)
     if initial then
         if isFirstTimePlayerActivated == false then -- After fast travel
-            LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
+            if GetCurrentZoneHouseId() == 0 then
+                LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
+            else
+                LWM.ChangeOutfit(LWM.vars.houseOutfitIndex)
+            end
         else -- --------------------------------- after login
             isFirstTimePlayerActivated = false
         end
