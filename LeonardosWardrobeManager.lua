@@ -53,9 +53,9 @@ panelData = {
     registerForRefresh = true
 }
 
-function LWM.GetAbilityName(slot, bar)
+function LWM.GetAbilityName(rawSlot, bar)
     bar = bar or HOTBAR_CATEGORY_PRIMARY
-    slot = slot + 2
+    local slot = rawSlot + 2
 
     id = GetSlotBoundId(slot, bar)
     name = GetAbilityName(id)
@@ -421,6 +421,31 @@ function LWM.OnPlayerUseOutfitStation(_)
     end
 end
 
+function LWM.OnUseAction(event, rawIndex)
+    local index = rawIndex - 2
+    local weaponPair, _ = GetActiveWeaponPairInfo()
+    local mainBar = (weaponPair == 1)
+
+    local bar = HOTBAR_CATEGORY_PRIMARY
+    if not mainBar then bar = HOTBAR_CATEGORY_BACKUP end
+
+    local hasDuration = not LWM.CheckForNoDuration(index, bar)
+
+    if hasDuration then
+        d(LWM.GetAbilityName(index) .. " cast")
+        d("-----------")
+    end
+end
+
+function LWM.ActionFinished(eventCode, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, log, sourceUnitId, targetUnitId, abilityId, overflow)
+    --if result == ACTION_RESULT_EFFECT_FADED then
+    --    d(abilityId)
+    --    d(GetAbilityName(abilityId))
+    --    d("==========")
+    --end
+    return
+end
+
 -- "Main" functions
 
 function LWM:Initialize()
@@ -478,6 +503,8 @@ function LWM:Initialize()
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_REINCARNATED, self.OnPlayerRes)
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_DYEING_STATION_INTERACT_START , self.OnPlayerUseOutfitStation)
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_ACTIVE_WEAPON_PAIR_CHANGED , self.ChangeToCombatOutfit)
+    EVENT_MANAGER:RegisterForEvent(self.name, EVENT_ACTION_SLOT_ABILITY_USED , self.OnUseAction)
+    EVENT_MANAGER:RegisterForEvent(self.name, EVENT_COMBAT_EVENT , self.ActionFinished)
 end
 
 function LWM.OnAddOnLoaded(_, addonName)
