@@ -82,7 +82,7 @@ optionsData = {
             [3] = {
                 type = "checkbox",
                 name = "Ability Bar Outfits",
-                tooltip = "The outfit to be switched to upon entering stealth",
+                tooltip = "Have separate outfits for your Main and Backup ability bars?",
                 choices = LWM.allOutfits,
                 getFunc = function() return LWM.vars.abilityToggle end,
                 setFunc = function() LWM.vars.abilityToggle = not LWM.vars.abilityToggle end,
