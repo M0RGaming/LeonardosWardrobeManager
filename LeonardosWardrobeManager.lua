@@ -433,17 +433,15 @@ function LWM.OnUseAction(event, rawIndex)
 
     if hasDuration then
         d(LWM.GetAbilityName(index) .. " cast")
-        d("-----------")
     end
 end
 
 function LWM.ActionFinished(eventCode, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, log, sourceUnitId, targetUnitId, abilityId, overflow)
-    --if result == ACTION_RESULT_EFFECT_FADED then
-    --    d(abilityId)
-    --    d(GetAbilityName(abilityId))
-    --    d("==========")
-    --end
-    return
+    if result == ACTION_RESULT_EFFECT_FADED then
+        d(abilityId)
+        d(GetAbilityName(abilityId))
+        d("==========")
+    end
 end
 
 -- "Main" functions
