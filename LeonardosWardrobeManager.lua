@@ -12,7 +12,7 @@ LWM.allOutfits = {"No Outfit"}
 LWM.allOutfitChoices = {0}
 LWM.username = "@Leonardo1123"
 
-LWM.variableVersion = 8
+LWM.variableVersion = 9
 LWM.default = {
     defaultOutfitIndex = 0,
     combatOutfitIndex = 0,
@@ -23,19 +23,28 @@ LWM.default = {
     perBarToggle = false,
     --perAbilityToggle = false,
 
-    abilitymain1OutfitIndex = 0,
-    abilitymain2OutfitIndex = 0,
-    abilitymain3OutfitIndex = 0,
-    abilitymain4OutfitIndex = 0,
-    abilitymain5OutfitIndex = 0,
-    abilitymain6OutfitIndex = 0,
+    --abilitymain1OutfitIndex = 0,
+    --abilitymain2OutfitIndex = 0,
+    --abilitymain3OutfitIndex = 0,
+    --abilitymain4OutfitIndex = 0,
+    --abilitymain5OutfitIndex = 0,
+    --abilitymain6OutfitIndex = 0,
+    --
+    --abilityback1OutfitIndex = 0,
+    --abilityback2OutfitIndex = 0,
+    --abilityback3OutfitIndex = 0,
+    --abilityback4OutfitIndex = 0,
+    --abilityback5OutfitIndex = 0,
+    --abilityback6OutfitIndex = 0,
 
-    abilityback1OutfitIndex = 0,
-    abilityback2OutfitIndex = 0,
-    abilityback3OutfitIndex = 0,
-    abilityback4OutfitIndex = 0,
-    abilityback5OutfitIndex = 0,
-    abilityback6OutfitIndex = 0,
+    houseOutfitIndex = 0,
+    dungeonOutfitIndex = 0,
+
+    cyrodiil_overworldOutfitIndex = 0,
+    cyrodiil_delveOutfitIndex = 0,
+    imperialOutfitIndex = 0,
+    sewersOutfitIndex = 0,
+    battlegroundOutfitIndex = 0,
 }
 
 -- Check for optional dependencies
@@ -150,9 +159,9 @@ optionsData = {
                 reference = "LWM_Backbar_Dropdown",
                 disabled = function() return not LWM.vars.perBarToggle end
             },
-            [7] = {
-                type = "divider",
-            },
+            --[7] = {
+            --    type = "divider",
+            --},
             --[8] = {
             --    type = "checkbox",
             --    name = "Ability Bar Outfits",
@@ -311,6 +320,93 @@ optionsData = {
             --    }
             --}
         }
+    },
+    [4] = {
+        type = "submenu",
+        name = "Locations",
+        tooltip = "Options related to locations",
+        controls = {
+            [1] = {
+                type = "dropdown",
+                name = "House Outfit",
+                tooltip = "The outfit to be worn in houses",
+                choices = LWM.allOutfits,
+                choicesValues = LWM.allOutfitChoices,
+                getFunc = function() return LWM.vars.houseOutfitIndex end,
+                setFunc = function(var) LWM.SetStateOutfitChoice("HOUSE", var) end,
+                reference = "LWM_House_Dropdown"
+            },
+            [2] = {
+                type = "dropdown",
+                name = "Dungeon Outfit",
+                tooltip = "The outfit to be worn in dungeons",
+                choices = LWM.allOutfits,
+                choicesValues = LWM.allOutfitChoices,
+                getFunc = function() return LWM.vars.dungeonOutfitIndex end,
+                setFunc = function(var) LWM.SetStateOutfitChoice("DUNGEON", var) end,
+                reference = "LWM_Dungeon_Dropdown"
+            },
+            [3] = {
+                type = "submenu",
+                name = "PVP",
+                tooltip = "Options related to PVP locations",
+                controls = {
+                    [1] = {
+                        type = "dropdown",
+                        name = "Battleground Outfit",
+                        tooltip = "The outfit to be worn in Battleground",
+                        choices = LWM.allOutfits,
+                        choicesValues = LWM.allOutfitChoices,
+                        getFunc = function() return LWM.vars.battlegroundOutfitIndex end,
+                        setFunc = function(var) LWM.SetStateOutfitChoice("BATTLEGROUND", var) end,
+                        reference = "LWM_Battleground_Dropdown"
+                    },
+                    [2] = {
+                        type = "divider",
+                    },
+                    [3] = {
+                        type = "dropdown",
+                        name = "Cyrodiil Overworld Outfit",
+                        tooltip = "The outfit to be worn in Cyrodiil",
+                        choices = LWM.allOutfits,
+                        choicesValues = LWM.allOutfitChoices,
+                        getFunc = function() return LWM.vars.cyrodiil_overworldOutfitIndex end,
+                        setFunc = function(var) LWM.SetStateOutfitChoice("CYRODIIL_OVERWORLD", var) end,
+                        reference = "LWM_Cyrodiil_Overworld_Dropdown"
+                    },
+                    [4] = {
+                        type = "dropdown",
+                        name = "Cyrodiil Delve Outfit",
+                        tooltip = "The outfit to be worn in Cyrodiil Delves",
+                        choices = LWM.allOutfits,
+                        choicesValues = LWM.allOutfitChoices,
+                        getFunc = function() return LWM.vars.cyrodiil_delveOutfitIndex end,
+                        setFunc = function(var) LWM.SetStateOutfitChoice("CYRODIIL_DELVE", var) end,
+                        reference = "LWM_Cyrodiil_Delve_Dropdown"
+                    },
+                    [5] = {
+                        type = "dropdown",
+                        name = "Imperial City Outfit",
+                        tooltip = "The outfit to be worn in Imperial City",
+                        choices = LWM.allOutfits,
+                        choicesValues = LWM.allOutfitChoices,
+                        getFunc = function() return LWM.vars.imperialOutfitIndex end,
+                        setFunc = function(var) LWM.SetStateOutfitChoice("IMPERIAL", var) end,
+                        reference = "LWM_Imperial_Dropdown"
+                    },
+                    [6] = {
+                        type = "dropdown",
+                        name = "Imperial Sewers Outfit",
+                        tooltip = "The outfit to be worn in Imperial Sewers",
+                        choices = LWM.allOutfits,
+                        choicesValues = LWM.allOutfitChoices,
+                        getFunc = function() return LWM.vars.sewersOutfitIndex end,
+                        setFunc = function(var) LWM.SetStateOutfitChoice("SEWERS", var) end,
+                        reference = "LWM_Sewers_Dropdown"
+                    },
+                }
+            },
+        }
     }
 }
 
@@ -361,12 +457,42 @@ function LWM.OnOutfitRenamed(_, _, _)
     if LWM_Stealth_Dropdown then LWM_Stealth_Dropdown:UpdateChoices() end
     if LWM_Mainbar_Dropdown then LWM_Mainbar_Dropdown:UpdateChoices() end
     if LWM_Backbar_Dropdown then LWM_Backbar_Dropdown:UpdateChoices() end
+    if LWM_House_Dropdown then LWM_House_Dropdown:UpdateChoices() end
+    if LWM_Cyrodiil_Overworld_Dropdown then LWM_Cyrodiil_Overworld_Dropdown:UpdateChoices() end
+    if LWM_Cyrodiil_Delve_Dropdown then LWM_Cyrodiil_Delve_Dropdown:UpdateChoices() end
+    if LWM_Imperial_Dropdown then LWM_Imperial_Dropdown:UpdateChoices() end
+    if LWM_Sewers_Dropdown then LWM_Sewers_Dropdown:UpdateChoices() end
+    if LWM_Battleground_Dropdown then LWM_Battleground_Dropdown:UpdateChoices() end
+end
+
+function LWM.ChangeToLocationOutfit()
+    if GetCurrentZoneHouseId() ~= 0 then
+        LWM.ChangeOutfit(LWM.vars.houseOutfitIndex)
+    elseif IsActiveWorldBattleground() then
+        LWM.ChangeOutfit(LWM.vars.battlegroundOutfitIndex)
+    elseif IsPlayerInAvAWorld() then
+        if IsInCyrodiil() then
+            LWM.ChangeOutfit(LWM.vars.cyrodiil_overworldOutfitIndex)
+        elseif IsInImperialCity() then
+            if GetCurrentMapIndex() then
+                LWM.ChangeOutfit(LWM.vars.imperialOutfitIndex)
+            else
+                LWM.ChangeOutfit(LWM.vars.sewersOutfitIndex)
+            end
+        else
+            LWM.ChangeOutfit(LWM.vars.cyrodiil_delveOutfitIndex)
+        end
+    elseif IsUnitInDungeon("player") then
+        LWM.ChangeOutfit(LWM.vars.dungeonOutfitIndex)
+    else
+        LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
+    end
 end
 
 function LWM.OnPlayerActivated(_, initial)
     if initial then
         if isFirstTimePlayerActivated == false then -- After fast travel
-            LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
+            LWM.ChangeToLocationOutfit()
         else -- --------------------------------- after login
             isFirstTimePlayerActivated = false
         end
@@ -384,7 +510,7 @@ function LWM.OnPlayerCombatState(_, inCombat)
             if LWM.inStealth > 0 then
                 LWM.ChangeOutfit(LWM.vars.stealthOutfitIndex)
             else
-                LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
+                LWM.ChangeToLocationOutfit()
             end
         end
     end
@@ -399,14 +525,14 @@ function LWM.OnPlayerStealthState(_, unitTag, StealthState)
             if LWM.inCombat then
                 LWM.ChangeToCombatOutfit()
             else
-                LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
+                LWM.ChangeToLocationOutfit()
             end
         end
     end
 end
 
 function LWM.OnPlayerRes(_)
-    LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
+    LWM.ChangeToLocationOutfit()
 end
 
 function LWM.OnPlayerUseOutfitStation(_)
