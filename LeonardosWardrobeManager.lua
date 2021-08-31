@@ -432,7 +432,7 @@ function LWM.OnUseAction(event, rawIndex)
     local hasDuration = not LWM.CheckForNoDuration(index, bar)
 
     if hasDuration then
-        d(LWM.GetAbilityName(index) .. " cast")
+        d(LWM.GetAbilityName(index, bar) .. " cast")
     end
 end
 
