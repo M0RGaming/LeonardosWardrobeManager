@@ -12,7 +12,7 @@ LWM.allOutfits = {"No Outfit"}
 LWM.allOutfitChoices = {0}
 LWM.username = "@Leonardo1123"
 
-LWM.variableVersion = 9
+LWM.variableVersion = 10
 LWM.default = {
     defaultOutfitIndex = 0,
     combatOutfitIndex = 0,
@@ -21,21 +21,6 @@ LWM.default = {
     stealthOutfitIndex = 0,
 
     perBarToggle = false,
-    --perAbilityToggle = false,
-
-    --abilitymain1OutfitIndex = 0,
-    --abilitymain2OutfitIndex = 0,
-    --abilitymain3OutfitIndex = 0,
-    --abilitymain4OutfitIndex = 0,
-    --abilitymain5OutfitIndex = 0,
-    --abilitymain6OutfitIndex = 0,
-    --
-    --abilityback1OutfitIndex = 0,
-    --abilityback2OutfitIndex = 0,
-    --abilityback3OutfitIndex = 0,
-    --abilityback4OutfitIndex = 0,
-    --abilityback5OutfitIndex = 0,
-    --abilityback6OutfitIndex = 0,
 
     houseOutfitIndex = 0,
     dungeonOutfitIndex = 0,
@@ -81,6 +66,15 @@ LWM.default = {
     summersetOutfitIndex = 0,
     vvardenfellOutfitIndex = 0,
     skyrimOutfitIndex = 0,
+
+    arkthzandOutfitIndex = 0,
+    clockworkOutfitIndex = 0,
+    goldOutfitIndex = 0,
+    hewOutfitIndex = 0,
+    murkmireOutfitIndex = 0,
+    reachOutfitIndex = 0,
+    selsweyrOutfitIndex = 0,
+    wrothgarOutfitIndex = 0,
 }
 
 -- Check for optional dependencies
@@ -195,166 +189,6 @@ optionsData = {
                 reference = "LWM_Backbar_Dropdown",
                 disabled = function() return not LWM.vars.perBarToggle end
             },
-            --[7] = {
-            --    type = "divider",
-            --},
-            --[8] = {
-            --    type = "checkbox",
-            --    name = "Ability Bar Outfits",
-            --    tooltip = "Have separate outfits for your Main and Backup ability bars?",
-            --    choices = LWM.allOutfits,
-            --    getFunc = function() return LWM.vars.perAbilityToggle end,
-            --    setFunc = function() LWM.vars.perAbilityToggle = not LWM.vars.perAbilityToggle end,
-            --    reference = "LWM_Per_Ability_Checkbox"
-            --},
-            --[9] = {
-            --    type = "submenu",
-            --    name = "Main Bar",
-            --    tooltip = "Options related to the Main Bar abilities",
-            --    disabled = function() return not LWM.vars.perAbilityToggle end,
-            --    controls = {
-            --        [1] = {
-            --            type = "dropdown",
-            --            name = function() return LWM.GetAbilityName(1) end,
-            --            tooltip = "The outfit to be switched to when using Ability 1",
-            --            choices = LWM.allOutfits,
-            --            choicesValues = LWM.allOutfitChoices,
-            --            getFunc = function() return LWM.vars.abilitymain1OutfitIndex end,
-            --            setFunc = function(var) LWM.SetStateOutfitChoice("ABILITYMAIN1", var) end,
-            --            disabled = LWM.CheckForNoDuration(1),
-            --            reference = "LWM_Ability_Main1_Dropdown",
-            --        },
-            --        [2] = {
-            --            type = "dropdown",
-            --            name = function() return LWM.GetAbilityName(2) end,
-            --            tooltip = "The outfit to be switched to when using Ability 2",
-            --            choices = LWM.allOutfits,
-            --            choicesValues = LWM.allOutfitChoices,
-            --            getFunc = function() return LWM.vars.abilitymain2OutfitIndex end,
-            --            setFunc = function(var) LWM.SetStateOutfitChoice("ABILITYMAIN2", var) end,
-            --            disabled = LWM.CheckForNoDuration(2),
-            --            reference = "LWM_Ability_Main2_Dropdown",
-            --        },
-            --        [3] = {
-            --            type = "dropdown",
-            --            name = function() return LWM.GetAbilityName(3) end,
-            --            tooltip = "The outfit to be switched to when using Ability 3",
-            --            choices = LWM.allOutfits,
-            --            choicesValues = LWM.allOutfitChoices,
-            --            getFunc = function() return LWM.vars.abilitymain3OutfitIndex end,
-            --            setFunc = function(var) LWM.SetStateOutfitChoice("ABILITYMAIN3", var) end,
-            --            disabled = LWM.CheckForNoDuration(3),
-            --            reference = "LWM_Ability_Main3_Dropdown",
-            --        },
-            --        [4] = {
-            --            type = "dropdown",
-            --            name = function() return LWM.GetAbilityName(4) end,
-            --            tooltip = "The outfit to be switched to when using Ability 4",
-            --            choices = LWM.allOutfits,
-            --            choicesValues = LWM.allOutfitChoices,
-            --            getFunc = function() return LWM.vars.abilitymain4OutfitIndex end,
-            --            setFunc = function(var) LWM.SetStateOutfitChoice("ABILITYMAIN4", var) end,
-            --            disabled = LWM.CheckForNoDuration(4),
-            --            reference = "LWM_Ability_Main4_Dropdown",
-            --        },
-            --        [5] = {
-            --            type = "dropdown",
-            --            name = function() return LWM.GetAbilityName(5) end,
-            --            tooltip = "The outfit to be switched to when using Ability 5",
-            --            choices = LWM.allOutfits,
-            --            choicesValues = LWM.allOutfitChoices,
-            --            getFunc = function() return LWM.vars.abilitymain5OutfitIndex end,
-            --            setFunc = function(var) LWM.SetStateOutfitChoice("ABILITYMAIN5", var) end,
-            --            disabled = LWM.CheckForNoDuration(5),
-            --            reference = "LWM_Ability_Main5_Dropdown",
-            --        },
-            --        [6] = {
-            --            type = "dropdown",
-            --            name = function() return LWM.GetAbilityName(6) end,
-            --            tooltip = "The outfit to be switched to when using Ultimate",
-            --            choices = LWM.allOutfits,
-            --            choicesValues = LWM.allOutfitChoices,
-            --            getFunc = function() return LWM.vars.abilitymain6OutfitIndex end,
-            --            setFunc = function(var) LWM.SetStateOutfitChoice("ABILITYMAIN6", var) end,
-            --            disabled = LWM.CheckForNoDuration(6),
-            --            reference = "LWM_Ability_Main6_Dropdown",
-            --        },
-            --    }
-            --},
-            --[10] = {
-            --    type = "submenu",
-            --    name = "Back Bar",
-            --    tooltip = "Options related to the Back Bar abilities",
-            --    disabled = function() return not LWM.vars.perAbilityToggle end,
-            --    controls = {
-            --        [1] = {
-            --            type = "dropdown",
-            --            name = function() return LWM.GetAbilityName(1, HOTBAR_CATEGORY_BACKUP) end,
-            --            tooltip = "The outfit to be switched to when using Ability 1",
-            --            choices = LWM.allOutfits,
-            --            choicesValues = LWM.allOutfitChoices,
-            --            getFunc = function() return LWM.vars.abilityback1OutfitIndex end,
-            --            setFunc = function(var) LWM.SetStateOutfitChoice("ABILITYBACK1", var) end,
-            --            disabled = LWM.CheckForNoDuration(1, HOTBAR_CATEGORY_BACKUP),
-            --            reference = "LWM_Ability_Back1_Dropdown",
-            --        },
-            --        [2] = {
-            --            type = "dropdown",
-            --            name = function() return LWM.GetAbilityName(2, HOTBAR_CATEGORY_BACKUP) end,
-            --            tooltip = "The outfit to be switched to when using Ability 2",
-            --            choices = LWM.allOutfits,
-            --            choicesValues = LWM.allOutfitChoices,
-            --            getFunc = function() return LWM.vars.abilityback2OutfitIndex end,
-            --            setFunc = function(var) LWM.SetStateOutfitChoice("ABILITYBACK2", var) end,
-            --            disabled = LWM.CheckForNoDuration(2, HOTBAR_CATEGORY_BACKUP),
-            --            reference = "LWM_Ability_Back2_Dropdown",
-            --        },
-            --        [3] = {
-            --            type = "dropdown",
-            --            name = function() return LWM.GetAbilityName(3, HOTBAR_CATEGORY_BACKUP) end,
-            --            tooltip = "The outfit to be switched to when using Ability 3",
-            --            choices = LWM.allOutfits,
-            --            choicesValues = LWM.allOutfitChoices,
-            --            getFunc = function() return LWM.vars.abilityback3OutfitIndex end,
-            --            setFunc = function(var) LWM.SetStateOutfitChoice("ABILITYBACK3", var) end,
-            --            disabled = LWM.CheckForNoDuration(3, HOTBAR_CATEGORY_BACKUP),
-            --            reference = "LWM_Ability_Back3_Dropdown",
-            --        },
-            --        [4] = {
-            --            type = "dropdown",
-            --            name = function() return LWM.GetAbilityName(4, HOTBAR_CATEGORY_BACKUP) end,
-            --            tooltip = "The outfit to be switched to when using Ability 4",
-            --            choices = LWM.allOutfits,
-            --            choicesValues = LWM.allOutfitChoices,
-            --            getFunc = function() return LWM.vars.abilityback4OutfitIndex end,
-            --            setFunc = function(var) LWM.SetStateOutfitChoice("ABILITYBACK4", var) end,
-            --            disabled = LWM.CheckForNoDuration(4, HOTBAR_CATEGORY_BACKUP),
-            --            reference = "LWM_Ability_Back4_Dropdown",
-            --        },
-            --        [5] = {
-            --            type = "dropdown",
-            --            name = function() return LWM.GetAbilityName(5, HOTBAR_CATEGORY_BACKUP) end,
-            --            tooltip = "The outfit to be switched to when using Ability 5",
-            --            choices = LWM.allOutfits,
-            --            choicesValues = LWM.allOutfitChoices,
-            --            getFunc = function() return LWM.vars.abilityback5OutfitIndex end,
-            --            setFunc = function(var) LWM.SetStateOutfitChoice("ABILITYBACK5", var) end,
-            --            disabled = LWM.CheckForNoDuration(5, HOTBAR_CATEGORY_BACKUP),
-            --            reference = "LWM_Ability_Back5_Dropdown",
-            --        },
-            --        [6] = {
-            --            type = "dropdown",
-            --            name = function() return LWM.GetAbilityName(6, HOTBAR_CATEGORY_BACKUP) end,
-            --            tooltip = "The outfit to be switched to when using Ultimate",
-            --            choices = LWM.allOutfits,
-            --            choicesValues = LWM.allOutfitChoices,
-            --            getFunc = function() return LWM.vars.abilityback6OutfitIndex end,
-            --            setFunc = function(var) LWM.SetStateOutfitChoice("ABILITYBACK6", var) end,
-            --            disabled = LWM.CheckForNoDuration(6, HOTBAR_CATEGORY_BACKUP),
-            --            reference = "LWM_Ability_Back6_Dropdown",
-            --        },
-            --    }
-            --}
         }
     },
     [4] = {
@@ -796,6 +630,93 @@ optionsData = {
                     },
                 },
             },
+            [9] = {
+                type = "submenu",
+                name = "DLC",
+                tooltip = "Options related to DLC Zones",
+                controls = {
+                    [1] = {
+                        type = "dropdown",
+                        name = "Blackreach: Arkthzand Cavern",
+                        tooltip = "The outfit to be worn in the Arkthzand Cavern",
+                        choices = LWM.allOutfits,
+                        choicesValues = LWM.allOutfitChoices,
+                        getFunc = function() return LWM.vars.arkthzandOutfitIndex end,
+                        setFunc = function(var) LWM.SetStateOutfitChoice("ARKTHZAND", var) end,
+                        reference = "LWM_Arkthzand_Dropdown"
+                    },
+                    [2] = {
+                        type = "dropdown",
+                        name = "Clockwork City",
+                        tooltip = "The outfit to be worn in Clockwork City",
+                        choices = LWM.allOutfits,
+                        choicesValues = LWM.allOutfitChoices,
+                        getFunc = function() return LWM.vars.clockworkOutfitIndex end,
+                        setFunc = function(var) LWM.SetStateOutfitChoice("CLOCKWORK", var) end,
+                        reference = "LWM_Clockwork_Dropdown"
+                    },
+                    [3] = {
+                        type = "dropdown",
+                        name = "Gold Coast",
+                        tooltip = "The outfit to be worn in Gold Coast",
+                        choices = LWM.allOutfits,
+                        choicesValues = LWM.allOutfitChoices,
+                        getFunc = function() return LWM.vars.goldOutfitIndex end,
+                        setFunc = function(var) LWM.SetStateOutfitChoice("GOLD", var) end,
+                        reference = "LWM_Gold_Dropdown"
+                    },
+                    [4] = {
+                        type = "dropdown",
+                        name = "Hew's Bane",
+                        tooltip = "The outfit to be worn in Hew's Bane",
+                        choices = LWM.allOutfits,
+                        choicesValues = LWM.allOutfitChoices,
+                        getFunc = function() return LWM.vars.hewOutfitIndex end,
+                        setFunc = function(var) LWM.SetStateOutfitChoice("HEW", var) end,
+                        reference = "LWM_Hew_Dropdown"
+                    },
+                    [5] = {
+                        type = "dropdown",
+                        name = "Murkmire",
+                        tooltip = "The outfit to be worn in Murkmire",
+                        choices = LWM.allOutfits,
+                        choicesValues = LWM.allOutfitChoices,
+                        getFunc = function() return LWM.vars.murkmireOutfitIndex end,
+                        setFunc = function(var) LWM.SetStateOutfitChoice("MURKMIRE", var) end,
+                        reference = "LWM_Murkmire_Dropdown"
+                    },
+                    [6] = {
+                        type = "dropdown",
+                        name = "The Reach",
+                        tooltip = "The outfit to be worn in The Reach",
+                        choices = LWM.allOutfits,
+                        choicesValues = LWM.allOutfitChoices,
+                        getFunc = function() return LWM.vars.reachOutfitIndex end,
+                        setFunc = function(var) LWM.SetStateOutfitChoice("REACH", var) end,
+                        reference = "LWM_Reach_Dropdown"
+                    },
+                    [7] = {
+                        type = "dropdown",
+                        name = "Southern Elsweyr",
+                        tooltip = "The outfit to be worn in Southern Elsweyr",
+                        choices = LWM.allOutfits,
+                        choicesValues = LWM.allOutfitChoices,
+                        getFunc = function() return LWM.vars.selsweyrOutfitIndex end,
+                        setFunc = function(var) LWM.SetStateOutfitChoice("SELSWEYR", var) end,
+                        reference = "LWM_Selsweyr_Dropdown"
+                    },
+                    [8] = {
+                        type = "dropdown",
+                        name = "Wrothgar",
+                        tooltip = "The outfit to be worn in Wrothgar",
+                        choices = LWM.allOutfits,
+                        choicesValues = LWM.allOutfitChoices,
+                        getFunc = function() return LWM.vars.wrothgarOutfitIndex end,
+                        setFunc = function(var) LWM.SetStateOutfitChoice("WROTHGAR", var) end,
+                        reference = "LWM_Wrothgar_Dropdown"
+                    },
+                },
+            },
         }
     },
 }
@@ -890,6 +811,15 @@ function LWM.OnOutfitRenamed(_, _, _)
     if LWM_Summerset_Dropdown then LWM_Summerset_Dropdown:UpdateChoices() end
     if LWM_Vvardenfell_Dropdown then LWM_Vvardenfell_Dropdown:UpdateChoices() end
     if LWM_Skyrim_Dropdown then LWM_Skyrim_Dropdown:UpdateChoices() end
+
+    if LWM_Arkthzand_Dropdown then LWM_Arkthzand_Dropdown:UpdateChoices() end
+    if LWM_Clockwork_Dropdown then LWM_Clockwork_Dropdown:UpdateChoices() end
+    if LWM_Gold_Dropdown then LWM_Gold_Dropdown:UpdateChoices() end
+    if LWM_Hew_Dropdown then LWM_Hew_Dropdown:UpdateChoices() end
+    if LWM_Murkmire_Dropdown then LWM_Murkmire_Dropdown:UpdateChoices() end
+    if LWM_Reach_Dropdown then LWM_Reach_Dropdown:UpdateChoices() end
+    if LWM_Selsweyr_Dropdown then LWM_Selsweyr_Dropdown:UpdateChoices() end
+    if LWM_Wrothgar_Dropdown then LWM_Wrothgar_Dropdown:UpdateChoices() end
 end
 
 function LWM.ChangeToLocationOutfit()
@@ -974,29 +904,6 @@ function LWM.OnPlayerUseOutfitStation(_)
     end
 end
 
---function LWM.OnUseAction(event, rawIndex)
---    local index = rawIndex - 2
---    local weaponPair, _ = GetActiveWeaponPairInfo()
---    local mainBar = (weaponPair == 1)
---
---    local bar = HOTBAR_CATEGORY_PRIMARY
---    if not mainBar then bar = HOTBAR_CATEGORY_BACKUP end
---
---    local hasDuration = not LWM.CheckForNoDuration(index, bar)
---
---    if hasDuration then
---        d(LWM.GetAbilityName(index) .. " cast")
---    end
---end
---
---function LWM.ActionFinished(eventCode, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, log, sourceUnitId, targetUnitId, abilityId, overflow)
---    if result == ACTION_RESULT_EFFECT_FADED then
---        d(abilityId)
---        d(GetAbilityName(abilityId))
---        d("==========")
---    end
---end
-
 -- "Main" functions
 
 function LWM:Initialize()
@@ -1004,16 +911,6 @@ function LWM:Initialize()
 
     local handlers = ZO_AlertText_GetHandlers() -- TODO: Make this safer using code below
     handlers[EVENT_OUTFIT_EQUIP_RESPONSE] = function() end
-
-    --local handlers = ZO_AlertText_GetHandlers()
-    --local originalHandler = handlers[EVENT_OUTFIT_CHANGE_RESPONSE]
-    --handlers[EVENT_OUTFIT_CHANGE_RESPONSE] = function(result, actorCategory, outfitIndex)
-    --    if result == something then
-    --        return false -- do not show the alert
-    --    else
-    --        return originalHandler(result, actorCategory, outfitIndex)
-    --    end
-    --end
 
     self.inCombat = IsUnitInCombat("player")
     self.inStealth = GetUnitStealthState("player")
@@ -1054,8 +951,6 @@ function LWM:Initialize()
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_REINCARNATED, self.OnPlayerRes)
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_DYEING_STATION_INTERACT_START , self.OnPlayerUseOutfitStation)
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_ACTIVE_WEAPON_PAIR_CHANGED , self.ChangeToCombatOutfit)
-    --EVENT_MANAGER:RegisterForEvent(self.name, EVENT_ACTION_SLOT_ABILITY_USED , self.OnUseAction)
-    --EVENT_MANAGER:RegisterForEvent(self.name, EVENT_COMBAT_EVENT , self.ActionFinished)
 end
 
 function LWM.OnAddOnLoaded(_, addonName)
