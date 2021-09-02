@@ -3,7 +3,7 @@
 ## APIVersion: 101031
 ## AddOnVersion: 40
 ## Version: 0.4.0
-## Description: Helps manage your wardrobe
+## Description: Allows automatic state-based outfit switching
 ## DependsOn: LibAddonMenu-2.0>=28
 ## OptionalDependsOn: LibFeedback
 ## SavedVariables: LWMVars

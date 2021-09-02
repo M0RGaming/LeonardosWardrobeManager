@@ -5,76 +5,84 @@ LeonardosWardrobeManager = {}
 local LAM2 = LibAddonMenu2
 local LWM = LeonardosWardrobeManager
 
+-- Misc.
+local NO_OUTFIT         = 0
+local ALLIANCE_DEFAULT  = -1
+
 -- Main Table Details
 LWM.name = "LeonardosWardrobeManager"
 LWM.fullName = "Leonardo's Wardrobe Manager"
 LWM.allOutfits = {"No Outfit"}
 LWM.allOutfitChoices = {0}
+LWM.allAlliedOutfits = {"Alliance Default", "No Outfit"}
+LWM.allAlliedOutfitChoices = {ALLIANCE_DEFAULT, NO_OUTFIT}
 LWM.username = "@Leonardo1123"
 
-LWM.variableVersion = 10
+LWM.variableVersion = 11
+
 LWM.default = {
-    defaultOutfitIndex = 0,
-    combatOutfitIndex = 0,
-    mainbarOutfitIndex = 0,
-    backbarOutfitIndex = 0,
-    stealthOutfitIndex = 0,
+    defaultOutfitIndex      = NO_OUTFIT,
+    combatOutfitIndex       = NO_OUTFIT,
+    mainbarOutfitIndex      = NO_OUTFIT,
+    backbarOutfitIndex      = NO_OUTFIT,
+    stealthOutfitIndex      = NO_OUTFIT,
 
     perBarToggle = false,
 
-    houseOutfitIndex = 0,
-    dungeonOutfitIndex = 0,
+    houseOutfitIndex        = NO_OUTFIT,
+    dungeonOutfitIndex      = NO_OUTFIT,
 
-    cyrodiil_overworldOutfitIndex = 0,
-    cyrodiil_delveOutfitIndex = 0,
-    imperialOutfitIndex = 0,
-    sewersOutfitIndex = 0,
-    battlegroundOutfitIndex = 0,
+    cyrodilOutfitIndex      = NO_OUTFIT,
+    cyrodil_dOutfitIndex    = NO_OUTFIT,
+    imperialOutfitIndex     = NO_OUTFIT,
+    sewersOutfitIndex       = NO_OUTFIT,
+    battlegroundOutfitIndex = NO_OUTFIT,
 
-    dominionOutfitIndex = 0,
-    auridonOutfitIndex = 0,
-    grahtwoodOutfitIndex = 0,
-    greenshadeOutfitIndex = 0,
-    khenarthiOutfitIndex = 0,
-    malabalOutfitIndex = 0,
-    reapersOutfitIndex = 0,
+    dominionOutfitIndex     = NO_OUTFIT,
+    auridonOutfitIndex      = ALLIANCE_DEFAULT,
+    grahtwoodOutfitIndex    = ALLIANCE_DEFAULT,
+    greenshadeOutfitIndex   = ALLIANCE_DEFAULT,
+    khenarthiOutfitIndex    = ALLIANCE_DEFAULT,
+    malabalOutfitIndex      = ALLIANCE_DEFAULT,
+    reapersOutfitIndex      = ALLIANCE_DEFAULT,
 
-    covenantOutfitIndex = 0,
-    alikrOutfitIndex = 0,
-    bangkoraiOutfitIndex = 0,
-    betnikhOutfitIndex = 0,
-    glenumbraOutfitIndex = 0,
-    rivenspireOutfitIndex = 0,
-    stormhavenOutfitIndex = 0,
-    strosOutfitIndex = 0,
+    covenantOutfitIndex     = NO_OUTFIT,
+    alikrOutfitIndex        = ALLIANCE_DEFAULT,
+    bangkoraiOutfitIndex    = ALLIANCE_DEFAULT,
+    betnikhOutfitIndex      = ALLIANCE_DEFAULT,
+    glenumbraOutfitIndex    = ALLIANCE_DEFAULT,
+    rivenspireOutfitIndex   = ALLIANCE_DEFAULT,
+    stormhavenOutfitIndex   = ALLIANCE_DEFAULT,
+    strosOutfitIndex        = ALLIANCE_DEFAULT,
 
-    pactOutfitIndex = 0,
-    balOutfitIndex = 0,
-    bleakrockOutfitIndex = 0,
-    deshaanOutfitIndex = 0,
-    eastmarchOutfitIndex = 0,
-    riftOutfitIndex = 0,
-    shadowfenOutfitIndex = 0,
-    stonefallsOutfitIndex = 0,
+    pactOutfitIndex         = NO_OUTFIT,
+    balOutfitIndex          = ALLIANCE_DEFAULT,
+    bleakrockOutfitIndex    = ALLIANCE_DEFAULT,
+    deshaanOutfitIndex      = ALLIANCE_DEFAULT,
+    eastmarchOutfitIndex    = ALLIANCE_DEFAULT,
+    riftOutfitIndex         = ALLIANCE_DEFAULT,
+    shadowfenOutfitIndex    = ALLIANCE_DEFAULT,
+    stonefallsOutfitIndex   = ALLIANCE_DEFAULT,
 
-    coldharbourOutfitIndex = 0,
-    craglornOutfitIndex = 0,
+    coldharbourOutfitIndex  = NO_OUTFIT,
+    craglornOutfitIndex     = NO_OUTFIT,
 
-    artaeumOutfitIndex = 0,
-    greymoorOutfitIndex = 0,
-    nelsweyrOutfitIndex = 0,
-    summersetOutfitIndex = 0,
-    vvardenfellOutfitIndex = 0,
-    skyrimOutfitIndex = 0,
+    artaeumOutfitIndex      = NO_OUTFIT,
+    greymoorOutfitIndex     = NO_OUTFIT,
+    blackwoodOutfitIndex    = NO_OUTFIT,
+    nelsweyrOutfitIndex     = NO_OUTFIT,
+    summersetOutfitIndex    = NO_OUTFIT,
+    vvardenfellOutfitIndex  = NO_OUTFIT,
+    skyrimOutfitIndex       = NO_OUTFIT,
 
-    arkthzandOutfitIndex = 0,
-    clockworkOutfitIndex = 0,
-    goldOutfitIndex = 0,
-    hewOutfitIndex = 0,
-    murkmireOutfitIndex = 0,
-    reachOutfitIndex = 0,
-    selsweyrOutfitIndex = 0,
-    wrothgarOutfitIndex = 0,
+    arkthzandOutfitIndex    = NO_OUTFIT,
+    clockworkOutfitIndex    = NO_OUTFIT,
+    goldOutfitIndex         = NO_OUTFIT,
+    hewOutfitIndex          = NO_OUTFIT,
+    murkmireOutfitIndex     = NO_OUTFIT,
+    reachOutfitIndex        = NO_OUTFIT,
+    selsweyrOutfitIndex     = NO_OUTFIT,
+    wrothgarOutfitIndex     = NO_OUTFIT,
 }
 
 -- Check for optional dependencies
@@ -240,7 +248,7 @@ optionsData = {
                         tooltip = "The outfit to be worn in Cyrodiil",
                         choices = LWM.allOutfits,
                         choicesValues = LWM.allOutfitChoices,
-                        getFunc = function() return LWM.vars.cyrodiil_overworldOutfitIndex end,
+                        getFunc = function() return LWM.vars.cyrodilOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("CYRODIIL_OVERWORLD", var) end,
                         reference = "LWM_Cyrodiil_Overworld_Dropdown"
                     },
@@ -250,7 +258,7 @@ optionsData = {
                         tooltip = "The outfit to be worn in Cyrodiil Delves",
                         choices = LWM.allOutfits,
                         choicesValues = LWM.allOutfitChoices,
-                        getFunc = function() return LWM.vars.cyrodiil_delveOutfitIndex end,
+                        getFunc = function() return LWM.vars.cyrodil_dOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("CYRODIIL_DELVE", var) end,
                         reference = "LWM_Cyrodiil_Delve_Dropdown"
                     },
@@ -298,8 +306,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Auridon",
                         tooltip = "The outfit to be worn in Auridon",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.auridonOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("AURIDON", var) end,
                         reference = "LWM_Auridon_Dropdown"
@@ -308,8 +316,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Grahtwood",
                         tooltip = "The outfit to be worn in Grahtwood",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.grahtwoodOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("GRAHTWOOD", var) end,
                         reference = "LWM_Grahtwood_Dropdown"
@@ -318,8 +326,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Greenshade",
                         tooltip = "The outfit to be worn in Greenshade",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.greenshadeOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("GREENSHADE", var) end,
                         reference = "LWM_Greenshade_Dropdown"
@@ -328,8 +336,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Khenarthi's Roost",
                         tooltip = "The outfit to be worn in Khenarthi's Roost",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.khenarthiOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("KHENARTHI", var) end,
                         reference = "LWM_Khenarthi_Dropdown"
@@ -338,8 +346,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Malabal Tor",
                         tooltip = "The outfit to be worn in Malabal Tor",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.malabalOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("MALABAL", var) end,
                         reference = "LWM_Malabal_Dropdown"
@@ -348,8 +356,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Reaper's March",
                         tooltip = "The outfit to be worn in Reaper's March",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.reapersOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("REAPERS", var) end,
                         reference = "LWM_Reapers_Dropdown"
@@ -378,8 +386,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Alik'r Desert",
                         tooltip = "The outfit to be worn in Alik'r Desert",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.alikrOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("ALIKR", var) end,
                         reference = "LWM_Alikr_Dropdown"
@@ -388,8 +396,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Bangkorai",
                         tooltip = "The outfit to be worn in Bangkorai",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.bangkoraiOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("BANGKORAI", var) end,
                         reference = "LWM_Bangkorai_Dropdown"
@@ -398,8 +406,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Betnikh",
                         tooltip = "The outfit to be worn in Betnikh",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.betnikhOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("BETNIKH", var) end,
                         reference = "LWM_Betnikh_Dropdown"
@@ -408,8 +416,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Glenumbra",
                         tooltip = "The outfit to be worn in Glenumbra",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.glenumbraOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("GLENUMBRA", var) end,
                         reference = "LWM_Glenumbra_Dropdown"
@@ -418,8 +426,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Rivenspire",
                         tooltip = "The outfit to be worn in Rivenspire",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.rivenspireOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("RIVENSPIRE", var) end,
                         reference = "LWM_Rivenspire_Dropdown"
@@ -428,8 +436,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Stormhaven",
                         tooltip = "The outfit to be worn in Stormhaven",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.stormhavenOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("STORMHAVEN", var) end,
                         reference = "LWM_Stormhaven_Dropdown"
@@ -438,8 +446,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Stros M'Kai",
                         tooltip = "The outfit to be worn in Stros M'Kai",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.strosOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("STROS", var) end,
                         reference = "LWM_Stros_Dropdown"
@@ -468,8 +476,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Bal Foyen",
                         tooltip = "The outfit to be worn in Bal Foyen",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.balOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("BAL", var) end,
                         reference = "LWM_Bal_Dropdown"
@@ -478,8 +486,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Bleakrock Isle",
                         tooltip = "The outfit to be worn in Bleakrock Isle",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.bleakrockOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("BLEAKROCK", var) end,
                         reference = "LWM_Bleakrock_Dropdown"
@@ -488,8 +496,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Deshaan",
                         tooltip = "The outfit to be worn in Deshaan",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.deshaanOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("DESHAAN", var) end,
                         reference = "LWM_Deshaan_Dropdown"
@@ -498,8 +506,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Eastmarch",
                         tooltip = "The outfit to be worn in Eastmarch",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.eastmarchOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("EASTMARCH", var) end,
                         reference = "LWM_Eastmarch_Dropdown"
@@ -508,8 +516,8 @@ optionsData = {
                         type = "dropdown",
                         name = "The Rift",
                         tooltip = "The outfit to be worn in The Rift",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.riftOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("RIFT", var) end,
                         reference = "LWM_Rift_Dropdown"
@@ -518,8 +526,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Shadowfen",
                         tooltip = "The outfit to be worn in Shadowfen",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.shadowfenOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("SHADOWFEN", var) end,
                         reference = "LWM_Shadowfen_Dropdown"
@@ -528,8 +536,8 @@ optionsData = {
                         type = "dropdown",
                         name = "Stonefalls",
                         tooltip = "The outfit to be worn in Stonefalls",
-                        choices = LWM.allOutfits,
-                        choicesValues = LWM.allOutfitChoices,
+                        choices = LWM.allAlliedOutfits,
+                        choicesValues = LWM.allAlliedOutfitChoices,
                         getFunc = function() return LWM.vars.stonefallsOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("STONEFALLS", var) end,
                         reference = "LWM_Stonefalls_Dropdown"
@@ -587,6 +595,16 @@ optionsData = {
                         getFunc = function() return LWM.vars.greymoorOutfitIndex end,
                         setFunc = function(var) LWM.SetStateOutfitChoice("GREYMOOR", var) end,
                         reference = "LWM_Greymoor_Dropdown"
+                    },
+                    [3] = {
+                        type = "dropdown",
+                        name = "Blackwood",
+                        tooltip = "The outfit to be worn in Blackwood",
+                        choices = LWM.allOutfits,
+                        choicesValues = LWM.allOutfitChoices,
+                        getFunc = function() return LWM.vars.blackwoodOutfitIndex end,
+                        setFunc = function(var) LWM.SetStateOutfitChoice("BLACKWOOD", var) end,
+                        reference = "LWM_Blackwood_Dropdown"
                     },
                     [3] = {
                         type = "dropdown",
@@ -722,6 +740,35 @@ optionsData = {
 }
 
 -- Helper functions
+function LWM.isDominion(zoneId)
+    local res = false
+    for _,v in pairs({381, 383, 108, 537, 58, 382}) do
+        if zoneId == v then
+            res = true
+        end
+    end
+    return res
+end
+
+function LWM.isCovenant(zoneId)
+    local res = false
+    for _,v in pairs({104, 92, 535, 3, 20, 19, 534}) do
+        if zoneId == v then
+            res = true
+        end
+    end
+    return res
+end
+
+function LWM.isPact(zoneId)
+    local res = false
+    for _,v in pairs({281, 280, 57, 101, 103, 117, 41}) do
+        if zoneId == v then
+            res = true
+        end
+    end
+    return res
+end
 
 function LWM.SetStateOutfitChoice(state, index)
     if state == "DEFAULT" then
@@ -756,71 +803,66 @@ function LWM.ChangeToCombatOutfit()
     end
 end
 
--- Event functions
+function LWM.ChangeToZoneOutfit()
+    local allZoneIds = {
+        [104]   = LWM.vars.alikrOutfitIndex,
+        [381]   = LWM.vars.auridonOutfitIndex,
+        [281]   = LWM.vars.balOutfitIndex,
+        [92]    = LWM.vars.bangkoraiOutfitIndex,
+        [535]   = LWM.vars.betnikhOutfitIndex,
+        [1208]  = LWM.vars.arkthzandOutfitIndex,
+        [1161]  = LWM.vars.greymoorOutfitIndex,
+        [1261]  = LWM.vars.blackwoodOutfitIndex,
+        [280]   = LWM.vars.bleakrockOutfitIndex,
+        [980]   = LWM.vars.clockworkOutfitIndex,
+        [347]   = LWM.vars.coldharbourOutfitIndex,
+        [888]   = LWM.vars.craglornOutfitIndex,
+        [57]    = LWM.vars.deshaanOutfitIndex,
+        [3]     = LWM.vars.glenumbraOutfitIndex,
+        [823]   = LWM.vars.goldOutfitIndex,
+        [383]   = LWM.vars.grahtwoodOutfitIndex,
+        [108]   = LWM.vars.greenshadeOutfitIndex,
+        [101]   = LWM.vars.eastmarchOutfitIndex,
+        [816]   = LWM.vars.hewOutfitIndex,
+        [537]   = LWM.vars.khenarthiOutfitIndex,
+        [58]    = LWM.vars.malabalOutfitIndex,
+        [726]   = LWM.vars.murkmireOutfitIndex,
+        [1086]  = LWM.vars.nelsweyrOutfitIndex,
+        [382]   = LWM.vars.reapersOutfitIndex,
+        [20]    = LWM.vars.rivenspireOutfitIndex,
+        [117]   = LWM.vars.shadowfenOutfitIndex,
+        [1133]  = LWM.vars.selsweyrOutfitIndex,
+        [41]    = LWM.vars.stonefallsOutfitIndex,
+        [19]    = LWM.vars.stormhavenOutfitIndex,
+        [534]   = LWM.vars.strosOutfitIndex,
+        [1011]  = LWM.vars.summersetOutfitIndex,
+        [1207]  = LWM.vars.reachOutfitIndex,
+        [103]   = LWM.vars.riftOutfitIndex,
+        [849]   = LWM.vars.vvardenfellOutfitIndex,
+        [1160]  = LWM.vars.skyrimOutfitIndex,
+        [684]   = LWM.vars.wrothgarOutfitIndex,
+    }
 
-function LWM.OnOutfitRenamed(_, _, _)
-    for i=1,GetNumUnlockedOutfits() do
-        LWM.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
+    zoneId = GetZoneId(GetUnitZoneIndex("player"))
+    if zoneId ~= GetParentZoneId(zoneId) then
+        zoneId = GetParentZoneId(zoneId)
     end
 
-    if LWM_Default_Dropdown then LWM_Default_Dropdown:UpdateChoices() end
-    if LWM_Combat_Dropdown then LWM_Combat_Dropdown:UpdateChoices() end
-    if LWM_Stealth_Dropdown then LWM_Stealth_Dropdown:UpdateChoices() end
-    if LWM_Mainbar_Dropdown then LWM_Mainbar_Dropdown:UpdateChoices() end
-    if LWM_Backbar_Dropdown then LWM_Backbar_Dropdown:UpdateChoices() end
+    index = allZoneIds[zoneId]
 
-    if LWM_House_Dropdown then LWM_House_Dropdown:UpdateChoices() end
-    if LWM_Cyrodiil_Overworld_Dropdown then LWM_Cyrodiil_Overworld_Dropdown:UpdateChoices() end
-    if LWM_Cyrodiil_Delve_Dropdown then LWM_Cyrodiil_Delve_Dropdown:UpdateChoices() end
-    if LWM_Imperial_Dropdown then LWM_Imperial_Dropdown:UpdateChoices() end
-    if LWM_Sewers_Dropdown then LWM_Sewers_Dropdown:UpdateChoices() end
-    if LWM_Battleground_Dropdown then LWM_Battleground_Dropdown:UpdateChoices() end
+    if index ~= -1 then
+        LWM.ChangeOutfit(index)
+    else
+        if LWM.isDominion(zoneId) then
+            LWM.ChangeOutfit(LWM.vars.dominionOutfitIndex)
+        elseif LWM.isCovenant(zoneId) then
+            LWM.ChangeOutfit(LWM.vars.covenantOutfitIndex)
+        elseif LWM.isPact(zoneId) then
+            LWM.ChangeOutfit(LWM.vars.pactOutfitIndex)
+        end
+    end
 
-    if LWM_Dominion_Dropdown then LWM_Dominion_Dropdown:UpdateChoices() end
-    if LWM_Auridon_Dropdown then LWM_Auridon_Dropdown:UpdateChoices() end
-    if LWM_Grahtwood_Dropdown then LWM_Grahtwood_Dropdown:UpdateChoices() end
-    if LWM_Greenshade_Dropdown then LWM_Greenshade_Dropdown:UpdateChoices() end
-    if LWM_Khenarthi_Dropdown then LWM_Khenarthi_Dropdown:UpdateChoices() end
-    if LWM_Malabal_Dropdown then LWM_Malabal_Dropdown:UpdateChoices() end
-    if LWM_Reapers_Dropdown then LWM_Reapers_Dropdown:UpdateChoices() end
-
-    if LWM_Covenant_Dropdown then LWM_Covenant_Dropdown:UpdateChoices() end
-    if LWM_Alikr_Dropdown then LWM_Alikr_Dropdown:UpdateChoices() end
-    if LWM_Bangkorai_Dropdown then LWM_Bangkorai_Dropdown:UpdateChoices() end
-    if LWM_Betnikh_Dropdown then LWM_Betnikh_Dropdown:UpdateChoices() end
-    if LWM_Glenumbra_Dropdown then LWM_Glenumbra_Dropdown:UpdateChoices() end
-    if LWM_Rivenspire_Dropdown then LWM_Rivenspire_Dropdown:UpdateChoices() end
-    if LWM_Stormhaven_Dropdown then LWM_Stormhaven_Dropdown:UpdateChoices() end
-    if LWM_Stros_Dropdown then LWM_Stros_Dropdown:UpdateChoices() end
-
-    if LWM_Pact_Dropdown then LWM_Pact_Dropdown:UpdateChoices() end
-    if LWM_Bal_Dropdown then LWM_Bal_Dropdown:UpdateChoices() end
-    if LWM_Bleakrock_Dropdown then LWM_Bleakrock_Dropdown:UpdateChoices() end
-    if LWM_Deshaan_Dropdown then LWM_Deshaan_Dropdown:UpdateChoices() end
-    if LWM_Eastmarch_Dropdown then LWM_Eastmarch_Dropdown:UpdateChoices() end
-    if LWM_Rift_Dropdown then LWM_Rift_Dropdown:UpdateChoices() end
-    if LWM_Shadowfen_Dropdown then LWM_Shadowfen_Dropdown:UpdateChoices() end
-    if LWM_Stonefalls_Dropdown then LWM_Stonefalls_Dropdown:UpdateChoices() end
-
-    if LWM_Coldharbour_Dropdown then LWM_Coldharbour_Dropdown:UpdateChoices() end
-    if LWM_Craglorn_Dropdown then LWM_Craglorn_Dropdown:UpdateChoices() end
-
-    if LWM_Artaeum_Dropdown then LWM_Artaeum_Dropdown:UpdateChoices() end
-    if LWM_Greymoor_Dropdown then LWM_Greymoor_Dropdown:UpdateChoices() end
-    if LWM_Nelsweyr_Dropdown then LWM_Nelsweyr_Dropdown:UpdateChoices() end
-    if LWM_Summerset_Dropdown then LWM_Summerset_Dropdown:UpdateChoices() end
-    if LWM_Vvardenfell_Dropdown then LWM_Vvardenfell_Dropdown:UpdateChoices() end
-    if LWM_Skyrim_Dropdown then LWM_Skyrim_Dropdown:UpdateChoices() end
-
-    if LWM_Arkthzand_Dropdown then LWM_Arkthzand_Dropdown:UpdateChoices() end
-    if LWM_Clockwork_Dropdown then LWM_Clockwork_Dropdown:UpdateChoices() end
-    if LWM_Gold_Dropdown then LWM_Gold_Dropdown:UpdateChoices() end
-    if LWM_Hew_Dropdown then LWM_Hew_Dropdown:UpdateChoices() end
-    if LWM_Murkmire_Dropdown then LWM_Murkmire_Dropdown:UpdateChoices() end
-    if LWM_Reach_Dropdown then LWM_Reach_Dropdown:UpdateChoices() end
-    if LWM_Selsweyr_Dropdown then LWM_Selsweyr_Dropdown:UpdateChoices() end
-    if LWM_Wrothgar_Dropdown then LWM_Wrothgar_Dropdown:UpdateChoices() end
-end
+    end
 
 function LWM.ChangeToLocationOutfit()
     if GetCurrentZoneHouseId() ~= 0 then
@@ -829,7 +871,7 @@ function LWM.ChangeToLocationOutfit()
         LWM.ChangeOutfit(LWM.vars.battlegroundOutfitIndex)
     elseif IsPlayerInAvAWorld() then
         if IsInCyrodiil() then
-            LWM.ChangeOutfit(LWM.vars.cyrodiil_overworldOutfitIndex)
+            LWM.ChangeOutfit(LWM.vars.cyrodilOutfitIndex)
         elseif IsInImperialCity() then
             if GetCurrentMapIndex() then
                 LWM.ChangeOutfit(LWM.vars.imperialOutfitIndex)
@@ -837,12 +879,20 @@ function LWM.ChangeToLocationOutfit()
                 LWM.ChangeOutfit(LWM.vars.sewersOutfitIndex)
             end
         else
-            LWM.ChangeOutfit(LWM.vars.cyrodiil_delveOutfitIndex)
+            LWM.ChangeOutfit(LWM.vars.cyrodil_dOutfitIndex)
         end
     elseif IsUnitInDungeon("player") then
         LWM.ChangeOutfit(LWM.vars.dungeonOutfitIndex)
     else
-        LWM.ChangeOutfit(LWM.vars.defaultOutfitIndex)
+        LWM.ChangeToZoneOutfit()
+    end
+end
+
+-- Event functions
+
+function LWM.OnOutfitRenamed(_, _, _)
+    for i=1,GetNumUnlockedOutfits() do
+        LWM.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
     end
 end
 
@@ -916,8 +966,12 @@ function LWM:Initialize()
     self.inStealth = GetUnitStealthState("player")
 
     for i=1,GetNumUnlockedOutfits() do
-        self.allOutfits[i + OUTFIT_OFFSET] = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
+        name = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
+
+        self.allOutfits[i + OUTFIT_OFFSET] = name
         self.allOutfitChoices[i + OUTFIT_OFFSET] = i
+        self.allAlliedOutfits[i + 2*OUTFIT_OFFSET] = name
+        self.allAlliedOutfitChoices[i + 2*OUTFIT_OFFSET] = i
     end
 
     if LWM.LibFeedbackInstalled then
