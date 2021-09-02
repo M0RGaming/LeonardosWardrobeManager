@@ -9,6 +9,4 @@
 ## SavedVariables: LWMVars
 
 LeonardosWardrobeManager.lua
-
-LibFeedback/LibFeedback.txt
-LibFeedback/LibFeedback.lua
+Settings.lua
