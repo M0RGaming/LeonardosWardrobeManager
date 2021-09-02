@@ -1,5 +1,5 @@
 -- Main Table
-LeonardosWardrobeManager = {}
+LeonardosWardrobeManager = LeonardosWardrobeManager or {}
 
 -- Aliases
 local LAM2 = LibAddonMenu2
@@ -16,7 +16,7 @@ LWM.allOutfits = {"No Outfit"}
 LWM.allOutfitChoices = {0}
 LWM.allAlliedOutfits = {"Alliance Default", "No Outfit"}
 LWM.allAlliedOutfitChoices = {ALLIANCE_DEFAULT, NO_OUTFIT}
-LWM.username = "@Leonardo1123"
+LWM.author = "@Leonardo1123"
 
 LWM.variableVersion = 11
 
@@ -86,15 +86,15 @@ LWM.default = {
 }
 
 -- Check for optional dependencies
-LWM.LibFeedbackInstalled = false
+LWM.LibFeedbackInstalled = nil ~= LibFeedback
 
 -- Misc. declarations
-OUTFIT_OFFSET = 1
-isFirstTimePlayerActivated = true
+local OUTFIT_OFFSET = 1
+local isFirstTimePlayerActivated = true
 
 -- LAM data
 
-panelData = {
+local panelData = {
     type = "panel",
     name = LWM.fullName,
     registerForRefresh = true
@@ -120,7 +120,7 @@ function LWM.CheckForNoDuration(slot, bar)
     return duration == 0
 end
 
-optionsData = {
+local optionsData = {
     [1] = {
         type = "description",
         title = nil,
@@ -982,7 +982,7 @@ function LWM:Initialize()
                 LWM,
                 LWM.fullName,
                 WINDOW_MANAGER:CreateTopLevelWindow("LWMDummyControl"),
-                LWM.username,
+                LWM.author,
                 {CENTER , GuiRoot , CENTER , 10, 10},
                 {0,5000,50000},
                 "Send feedback or a tip! Please consider reporting any bugs to ESOUI or GitHub as well."
@@ -1011,9 +1011,7 @@ function LWM:Initialize()
 end
 
 function LWM.OnAddOnLoaded(_, addonName)
-    if addonName == "LibFeedback" then
-        LWM.LibFeedbackInstalled = true
-    elseif addonName == LWM.name then
+    if addonName == LWM.name then
         LWM:Initialize()
         EVENT_MANAGER:UnregisterForEvent(LWM.name, EVENT_ADD_ON_LOADED)
     end
