@@ -104,8 +104,8 @@ function LWM.GetAbilityName(rawSlot, bar)
     bar = bar or HOTBAR_CATEGORY_PRIMARY
     local slot = rawSlot + 2
 
-    id = GetSlotBoundId(slot, bar)
-    name = GetAbilityName(id)
+    local id = GetSlotBoundId(slot, bar)
+    local name = GetAbilityName(id)
 
     return name
 end
@@ -114,8 +114,8 @@ function LWM.CheckForNoDuration(slot, bar)
     bar = bar or HOTBAR_CATEGORY_PRIMARY
     slot = slot + 2
 
-    id = GetSlotBoundId(slot, bar)
-    duration = GetAbilityDuration(id)
+    local id = GetSlotBoundId(slot, bar)
+    local duration = GetAbilityDuration(id)
 
     return duration == 0
 end
@@ -843,12 +843,12 @@ function LWM.ChangeToZoneOutfit()
         [684]   = LWM.vars.wrothgarOutfitIndex,
     }
 
-    zoneId = GetZoneId(GetUnitZoneIndex("player"))
+    local zoneId = GetZoneId(GetUnitZoneIndex("player"))
     if zoneId ~= GetParentZoneId(zoneId) then
         zoneId = GetParentZoneId(zoneId)
     end
 
-    index = allZoneIds[zoneId]
+    local index = allZoneIds[zoneId]
 
     if index ~= -1 then
         LWM.ChangeOutfit(index)
@@ -944,11 +944,14 @@ end
 
 function LWM.OnPlayerUseOutfitStation(_)
     for i=1,GetNumUnlockedOutfits() do
-        name = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
+        local name = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
         if name == "" then
             name = "Outfit " .. tostring(i)
+
             LWM.allOutfits[i + OUTFIT_OFFSET] = name
             LWM.allOutfitChoices[i + OUTFIT_OFFSET] = i
+            LWM.allAlliedOutfits[i + 2*OUTFIT_OFFSET] = name
+            LWM.allAlliedOutfitChoices[i + 2*OUTFIT_OFFSET] = i
             RenameOutfit(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i, name)
         end
     end
@@ -959,14 +962,14 @@ end
 function LWM:Initialize()
     LWM.vars = ZO_SavedVars:NewCharacterIdSettings("LWMVars", LWM.variableVersion, nil, LWM.default, GetWorldName())
 
-    local handlers = ZO_AlertText_GetHandlers() -- TODO: Make this safer using code below
+    local handlers = ZO_AlertText_GetHandlers() -- TODO: Make this safer
     handlers[EVENT_OUTFIT_EQUIP_RESPONSE] = function() end
 
     self.inCombat = IsUnitInCombat("player")
     self.inStealth = GetUnitStealthState("player")
 
     for i=1,GetNumUnlockedOutfits() do
-        name = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
+        local name = GetOutfitName(GAMEPLAY_ACTOR_CATEGORY_PLAYER, i)
 
         self.allOutfits[i + OUTFIT_OFFSET] = name
         self.allOutfitChoices[i + OUTFIT_OFFSET] = i
